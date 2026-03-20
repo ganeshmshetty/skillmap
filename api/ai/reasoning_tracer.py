@@ -1,11 +1,24 @@
-from anthropic import Anthropic
+import os
+
+from google import genai
 from .prompts import REASONING_TRACE_PROMPT
 from .models import GapItem, ReasoningTrace
 from .hallucination_guard import filter_traces
 
-client = Anthropic()
+_client = None
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 
 LEVEL_LABELS = {0: "no experience", 1: "junior", 2: "mid-level", 3: "senior"}
+
+
+def _get_client():
+    global _client
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY", "").strip()
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is not set")
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 def generate_traces(
     ordered_modules: list[dict],   # from Member B's DAG engine
@@ -51,12 +64,13 @@ def generate_traces(
         )
 
         try:
-            response = client.messages.create(
-                model="claude-haiku-4-5",
-                max_tokens=300,
-                messages=[{"role": "user", "content": prompt}]
+            response = _get_client().models.generate_content(
+                model=GEMINI_MODEL,
+                contents=prompt,
             )
-            justification = response.content[0].text.strip()
+            justification = (response.text or "").strip()
+            if not justification:
+                raise ValueError("Empty Gemini response")
         except Exception as e:
             justification = f"This module addresses the {gap_description} requirement."
 

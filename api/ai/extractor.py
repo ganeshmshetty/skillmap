@@ -1,10 +1,12 @@
 import json
+import os
 import re
-from anthropic import Anthropic
+from google import genai
 from .prompts import RESUME_EXTRACTION_PROMPT, JD_EXTRACTION_PROMPT
 from .models import ExtractedSkill, JDSkill
 
-client = Anthropic()
+_client = None
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 nlp = None  # lazy load
 
 def _get_nlp():
@@ -15,14 +17,23 @@ def _get_nlp():
         nlp = spacy.load("en_core_web_sm")
     return nlp
 
+
+def _get_client():
+    global _client
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY", "").strip()
+        if not api_key:
+            raise RuntimeError("GEMINI_API_KEY is not set")
+        _client = genai.Client(api_key=api_key)
+    return _client
+
 def _call_llm(prompt: str) -> str:
-    """Call Claude and return raw text response."""
-    response = client.messages.create(
-        model="claude-haiku-4-5",  # fast + cheap for extraction
-        max_tokens=2000,
-        messages=[{"role": "user", "content": prompt}]
+    """Call Gemini and return raw text response."""
+    response = _get_client().models.generate_content(
+        model=GEMINI_MODEL,
+        contents=prompt,
     )
-    return response.content[0].text
+    return response.text or "[]"
 
 def _parse_json_safely(raw: str) -> list:
     """Strip markdown fences and parse JSON."""
