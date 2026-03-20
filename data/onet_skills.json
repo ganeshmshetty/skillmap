@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2026-03-20",
+    "description": "O*NET Skills Catalog - populated by Member D"
+  },
+  "skills": {
+    "example_skill_id_001": {
+      "title": "Python Programming",
+      "category": "Technical Skills",
+      "description": "Ability to write and maintain Python code",
+      "importance": 8
+    }
+  }
+}
