@@ -1,39 +1,24 @@
 import os
-
-from google import genai
+import google.generativeai as genai
+from dotenv import load_dotenv
 from .prompts import REASONING_TRACE_PROMPT
 from .models import GapItem, ReasoningTrace
-from .hallucination_guard import filter_traces
 
-_client = None
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+gemini = genai.GenerativeModel("gemini-1.5-flash")
 
 LEVEL_LABELS = {0: "no experience", 1: "junior", 2: "mid-level", 3: "senior"}
 
-
-def _get_client():
-    global _client
-    if _client is None:
-        api_key = os.getenv("GEMINI_API_KEY", "").strip()
-        if not api_key:
-            raise RuntimeError("GEMINI_API_KEY is not set")
-        _client = genai.Client(api_key=api_key)
-    return _client
-
 def generate_traces(
-    ordered_modules: list[dict],   # from Member B's DAG engine
+    ordered_modules: list[dict],
     gap_vector: list[GapItem],
     catalog: list[dict]
 ) -> list[ReasoningTrace]:
-    """
-    Generate a reasoning trace for each module in the ordered pathway.
-    LLM only writes justification — never names modules or invents content.
-    """
     gap_map = {g.onet_id or g.skill_name.lower(): g for g in gap_vector}
     traces = []
 
     for i, module in enumerate(ordered_modules):
-        # Find the primary gap this module closes
         primary_gap = None
         for skill_id in module.get("skill_ids", []):
             if skill_id in gap_map:
@@ -41,7 +26,6 @@ def generate_traces(
                 break
 
         if not primary_gap:
-            # Module is a prerequisite, use generic gap context
             gap_description = f"prerequisite for {module.get('title', 'next module')}"
             current_level_label = "foundational"
             required_level_label = "intermediate"
@@ -52,7 +36,7 @@ def generate_traces(
 
         prereq_chain = [
             catalog_lookup(pid, catalog)
-            for pid in module.get("prerequisites", [])[:3]  # cap at 3 for prompt brevity
+            for pid in module.get("prerequisites", [])[:3]
         ]
 
         prompt = REASONING_TRACE_PROMPT.format(
@@ -64,14 +48,9 @@ def generate_traces(
         )
 
         try:
-            response = _get_client().models.generate_content(
-                model=GEMINI_MODEL,
-                contents=prompt,
-            )
-            justification = (response.text or "").strip()
-            if not justification:
-                raise ValueError("Empty Gemini response")
-        except Exception as e:
+            response = gemini.generate_content(prompt)
+            justification = response.text.strip()
+        except Exception:
             justification = f"This module addresses the {gap_description} requirement."
 
         traces.append(ReasoningTrace(
@@ -83,7 +62,6 @@ def generate_traces(
             prerequisite_chain=prereq_chain
         ))
 
-    # Final hallucination guard pass
     valid_ids = {m["id"] for m in catalog}
     traces = [t for t in traces if t.module_id in valid_ids]
     return traces

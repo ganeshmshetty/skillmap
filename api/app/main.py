@@ -9,11 +9,9 @@ from fastapi import BackgroundTasks, FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from ai.embedder import anchor_to_onet
-from ai.extractor import extract_jd_skills, extract_resume_skills
-from ai.gap_analyzer import compute_gap_vector, generate_adaptive_pathway
-from ai.models import AnalysisResult, ExtractedSkill, JDSkill
-from ai.parser import extract_text
+# Heavy AI modules are imported lazily inside `_run_analysis` so the API
+# can start for lightweight checks (e.g. /health) even if ML deps
+# (spacy, sentence-transformers, etc.) are not installed in the env.
 from app.services.catalog import CatalogValidationError, CourseCatalogService
 
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt"}
@@ -113,6 +111,18 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
     )
 
     try:
+        # Import heavy AI modules at runtime to avoid blocking server startup
+        # when optional ML dependencies are not installed. If imports fail
+        # the job will be marked as failed with a clear error.
+        try:
+            from ai.parser import extract_text
+            from ai.extractor import extract_jd_skills, extract_resume_skills
+            from ai.embedder import anchor_to_onet
+            from ai.gap_analyzer import compute_gap_vector, generate_adaptive_pathway
+            from ai.models import AnalysisResult
+        except Exception as exc:
+            raise RuntimeError(f"AI dependencies missing or failed to import: {exc}")
+
         resume_text = extract_text(resume_bytes, resume_filename)
         jd_text = extract_text(jd_bytes, jd_filename)
 
@@ -139,7 +149,6 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         # Simple count heuristic:
         # Covered if delta is 0. compute_gap_vector returns ONLY items with delta > 0.
         # So items NOT in gap_vector are covered (or not required).
-        
         gap_onet_ids = {g.onet_id for g in gap_vector if g.onet_id}
         total_required_count = len(required_skills)
         if total_required_count > 0:

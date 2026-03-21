@@ -168,7 +168,7 @@ export default function App() {
               </div>
 
               {/* Metric Cards */}
-              <SummaryCards summary={result.summary} />
+              <SummaryCards result={result} />
 
               {/* Skill Gap Chart */}
               <SkillGapHeatmap gapVector={result.gap_vector || buildGapFromPathway(result)} />
@@ -197,20 +197,18 @@ export default function App() {
 
 /**
  * Derive a gap vector from pathway nodes when the API doesn't return one explicitly.
- * Uses reasoning trace confidence as a proxy for gap size.
+ * Uses node reasoning confidence as a proxy for gap size.
  */
 function buildGapFromPathway(result) {
   const nodes = result?.pathway?.nodes || [];
-  const traces = result?.reasoning_traces || [];
-  const traceMap = Object.fromEntries(traces.map((t) => [t.module_id, t]));
 
   return nodes.map((n) => {
-    const trace = traceMap[n.module_id];
+    const trace = n.reasoning || result?.reasoning_traces?.find((t) => t.module_id === n.module_id);
     const conf = trace?.confidence ?? 0.7;
     return {
-      skill_name: n.title,
-      onet_id: n.skills_targeted?.[0] || n.module_id,
-      delta: 1 - conf,           // inverse of confidence = gap size
+      skill_name: n.skill_gaps_covered?.[0] || n.title,
+      onet_id: n.module_id,
+      gap_score: 1 - conf,
       importance: conf,
     };
   });

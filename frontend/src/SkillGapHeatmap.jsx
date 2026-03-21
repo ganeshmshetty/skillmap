@@ -51,7 +51,16 @@ export default function SkillGapHeatmap({ gapVector }) {
 
     const data = gapVector.slice(0, 12).map((g) => ({
         name: g.skill_name || g.onet_id || "Unknown Skill",
-        gap: Math.min(1, Math.max(0, g.delta ?? g.importance ?? 0.5)),
+        gap: Math.min(
+            1,
+            Math.max(
+                0,
+                g.gap_score ??
+                (typeof g.required_level === "number" && typeof g.current_level === "number"
+                    ? Math.max(0, g.required_level - g.current_level) / 3
+                    : 0.5)
+            )
+        ),
         importance: g.importance,
     }));
 

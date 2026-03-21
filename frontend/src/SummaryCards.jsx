@@ -27,16 +27,16 @@ function MetricCard({ icon, label, value, formatted, color, delay = 0 }) {
     );
 }
 
-export default function SummaryCards({ summary }) {
+export default function SummaryCards({ result }) {
     const coverage = useCountUp(
-        Math.round((summary?.coverage_score ?? 0) * 100),
+        Math.round((result?.coverage_score ?? 0) * 100),
         1000
     );
     const redundancy = useCountUp(
-        Math.round((summary?.redundancy_reduction ?? 0) * 100),
+        Math.round((result?.redundancy_reduction ?? 0) * 100),
         1000
     );
-    const minutes = useCountUp(summary?.estimated_total_minutes ?? 0, 1200);
+    const minutes = useCountUp(result?.pathway?.total_duration ?? 0, 1200);
     const hours = Math.round((minutes / 60) * 10) / 10;
 
     return (

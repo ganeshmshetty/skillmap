@@ -62,7 +62,20 @@ function buildLayout(nodes, edges) {
         if (group.length > 0) col++;
     });
 
-    const rfEdges = (edges || []).map((e, i) => ({
+    const fallbackEdges = [];
+    if ((!edges || edges.length === 0) && rfNodes.length > 1) {
+        for (let i = 0; i < rfNodes.length - 1; i += 1) {
+            fallbackEdges.push({
+                from: rfNodes[i].id,
+                to: rfNodes[i + 1].id,
+                type: "sequence",
+            });
+        }
+    }
+
+    const sourceEdges = edges && edges.length > 0 ? edges : fallbackEdges;
+
+    const rfEdges = sourceEdges.map((e, i) => ({
         id: `e-${e.from}-${e.to}-${i}`,
         source: e.from,
         target: e.to,

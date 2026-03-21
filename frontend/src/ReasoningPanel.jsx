@@ -1,7 +1,7 @@
 export default function ReasoningPanel({ module: mod, traces, onClose }) {
     if (!mod) return null;
 
-    const trace = traces?.find((t) => t.module_id === mod.module_id);
+    const trace = mod.reasoning || traces?.find((t) => t.module_id === mod.module_id);
     const confidence = trace?.confidence ?? 0;
     const confidencePct = Math.round(confidence * 100);
 
@@ -79,17 +79,17 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                         <div className="trace-section">
                             <div className="trace-section-label">Chain-of-Thought</div>
                             <div className="trace-text">
-                                {trace.text || "No reasoning trace available."}
+                                {trace.justification || "No reasoning trace available."}
                             </div>
                         </div>
                     )}
 
                     {/* Skills Targeted */}
-                    {mod.skills_targeted?.length > 0 && (
+                    {mod.skill_gaps_covered?.length > 0 && (
                         <div className="trace-section">
-                            <div className="trace-section-label">O*NET Skills Targeted</div>
+                            <div className="trace-section-label">Skill Gaps Covered</div>
                             <div className="skills-chips">
-                                {mod.skills_targeted.map((s) => (
+                                {mod.skill_gaps_covered.map((s) => (
                                     <span key={s} className="skill-chip">
                                         {s}
                                     </span>
@@ -127,7 +127,7 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                         }}
                     >
                         {[
-                            { label: "Gap Closed", value: `${Math.round((1 - confidence) * 100)}%` },
+                            { label: "Confidence", value: `${confidencePct}%` },
                             { label: "Phase", value: mod.phase },
                         ].map(({ label, value }) => (
                             <div
