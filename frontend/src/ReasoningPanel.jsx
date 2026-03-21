@@ -1,3 +1,5 @@
+import { CheckCircle } from "lucide-react";
+
 export default function ReasoningPanel({ module: mod, traces, onClose }) {
     if (!mod) return null;
 
@@ -112,7 +114,8 @@ export default function ReasoningPanel({ module: mod, traces, onClose }) {
                                 borderRadius: "var(--radius-sm)",
                             }}
                         >
-                            ✅ This module is catalog-locked. The LLM only explains a pre-indexed course;
+                            <CheckCircle size={15} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 6 }} />
+                            This module is catalog-locked. The LLM only explains a pre-indexed course;
                             it never invents module IDs or titles. Zero hallucination guarantee.
                         </div>
                     </div>

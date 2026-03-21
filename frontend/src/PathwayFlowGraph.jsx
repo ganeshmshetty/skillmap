@@ -8,6 +8,7 @@ import ReactFlow, {
     BackgroundVariant,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import { Map } from "lucide-react";
 
 /* ---- Phase config ---- */
 const PHASE_CONFIG = {
@@ -115,7 +116,7 @@ export default function PathwayFlowGraph({ pathway, onSelectModule }) {
     return (
         <div className="glass-card flow-card">
             <div className="flow-header">
-                <div className="flow-header-title">🗺️ Adaptive Learning Pathway</div>
+                <div className="flow-header-title"><Map size={24} strokeWidth={2.5} style={{ marginRight: 6 }} /> Adaptive Learning Pathway</div>
                 <div className="flow-legend">
                     {Object.entries(PHASE_CONFIG).map(([phase, cfg]) => (
                         <div key={phase} className="legend-item">

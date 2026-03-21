@@ -12,6 +12,7 @@ import SummaryCards from "./SummaryCards";
 import SkillGapHeatmap from "./SkillGapHeatmap";
 import PathwayFlowGraph from "./PathwayFlowGraph";
 import ReasoningPanel from "./ReasoningPanel";
+import { BrainCircuit } from "lucide-react";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -121,7 +122,7 @@ export default function App() {
       <div className="page">
         {/* ---- Header ---- */}
         <header className="header">
-          <div className="header-logo">🧠</div>
+          <div className="header-logo"><BrainCircuit size={20} strokeWidth={2.5} color="var(--on-surface)" /></div>
           <div className="header-title">AI-Adaptive Onboarding Engine</div>
           <div className="header-badge">Hackathon 2026</div>
         </header>

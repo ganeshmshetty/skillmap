@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
+import { UploadCloud, Search, BarChart2, Compass, Check } from "lucide-react";
 
 const STEPS = [
-    { icon: "📤", label: "Uploading" },
-    { icon: "🔍", label: "Parsing Skills" },
-    { icon: "📊", label: "Computing Gaps" },
-    { icon: "🧭", label: "Building Pathway" },
+    { icon: <UploadCloud size={20} strokeWidth={2.5} />, label: "Uploading" },
+    { icon: <Search size={20} strokeWidth={2.5} />, label: "Parsing Skills" },
+    { icon: <BarChart2 size={20} strokeWidth={2.5} />, label: "Computing Gaps" },
+    { icon: <Compass size={20} strokeWidth={2.5} />, label: "Building Pathway" },
 ];
 
 // Map API status to step index (0-based)
@@ -67,7 +68,7 @@ export default function ProgressBar({ jobId, apiBase, onComplete, onError }) {
                         <div key={step.label} style={{ display: "flex", alignItems: "center" }}>
                             <div className="ps-item">
                                 <div className={`ps-dot${active ? " active" : ""}${done ? " done" : ""}`}>
-                                    {done ? "✓" : step.icon}
+                                    {done ? <Check size={20} strokeWidth={3} /> : step.icon}
                                 </div>
                                 <div className={`ps-label${active ? " active" : ""}${done ? " done" : ""}`}>
                                     {step.label}

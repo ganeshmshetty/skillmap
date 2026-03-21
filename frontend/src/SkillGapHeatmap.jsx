@@ -5,9 +5,9 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    ResponsiveContainer,
     Cell,
 } from "recharts";
+import { BarChart3 } from "lucide-react";
 
 function gapColor(score) {
     if (score >= 0.7) return "var(--accent-coral)";
@@ -67,7 +67,7 @@ export default function SkillGapHeatmap({ gapVector }) {
     return (
         <div className="glass-card chart-card">
             <div className="chart-title">
-                📊 Skill Gap Analysis
+                <BarChart3 size={28} strokeWidth={2.5} /> Skill Gap Analysis
                 <span
                     style={{
                         fontSize: 11,

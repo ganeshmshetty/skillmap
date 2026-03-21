@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { CheckCircle2, FileText, ClipboardList, Paperclip, AlertTriangle, Rocket } from "lucide-react";
 
 const DOMAINS = ["Technology", "Operations", "Sales", "Healthcare"];
 
@@ -16,7 +17,7 @@ function FileDropZone({ label, icon, file, onDrop, accept }) {
       className={`drop-zone${isDragActive ? " drag-over" : ""}${file ? " has-file" : ""}`}
     >
       <input {...getInputProps()} />
-      <span className="drop-icon">{file ? "✅" : icon}</span>
+      <span className="drop-icon">{file ? <CheckCircle2 size={40} strokeWidth={2} color="var(--primary)" /> : icon}</span>
       <div className="drop-label">{label}</div>
       <div className="drop-hint">
         {file ? "Click or drag to replace" : "Drag & drop or click to browse"}
@@ -26,7 +27,7 @@ function FileDropZone({ label, icon, file, onDrop, accept }) {
       </div>
       {file && (
         <div className="drop-filename" title={file.name}>
-          📎 {file.name}
+          <Paperclip size={14} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 6 }} /> {file.name}
         </div>
       )}
     </div>
@@ -61,14 +62,14 @@ export default function UploadPanel({ onSubmit, error }) {
       <div className="upload-grid">
         <FileDropZone
           label="Resume"
-          icon="📄"
+          icon={<FileText size={40} strokeWidth={2} />}
           file={resume}
           onDrop={setResume}
           accept={ACCEPT}
         />
         <FileDropZone
           label="Job Description"
-          icon="📋"
+          icon={<ClipboardList size={40} strokeWidth={2} />}
           file={jd}
           onDrop={setJd}
           accept={ACCEPT}
@@ -91,7 +92,7 @@ export default function UploadPanel({ onSubmit, error }) {
 
       {error && (
         <div className="error-banner">
-          ⚠️ {error}
+          <AlertTriangle size={18} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 6 }} /> {error}
         </div>
       )}
 
@@ -101,7 +102,7 @@ export default function UploadPanel({ onSubmit, error }) {
         className="btn-analyze"
         disabled={!resume || !jd}
       >
-        {resume && jd ? `🚀 Analyze — ${domain}` : "Select both files to continue"}
+        {resume && jd ? <><Rocket size={20} strokeWidth={2.5} style={{ display: "inline-block", verticalAlign: "text-bottom", marginRight: 8 }} /> Analyze — {domain}</> : "Select both files to continue"}
       </button>
     </form>
   );
