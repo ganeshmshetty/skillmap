@@ -107,6 +107,21 @@ def _get_job(job_id: str) -> dict | None:
         return JOBS.get(job_id)
 
 
+def _emit_event(job_id: str, stage: str, detail: str, data: dict | None = None) -> None:
+    """Append a structured trace event to the job's live event log."""
+    with _JOBS_LOCK:
+        job = JOBS.get(job_id)
+        if job is None:
+            return
+        if "events" not in job:
+            job["events"] = []
+        job["events"].append({
+            "ts": _utc_now(),
+            "stage": stage,
+            "detail": detail,
+            "data": data or {},
+        })
+
 def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_bytes: bytes, jd_filename: str) -> None:
     _set_job(
         job_id,
@@ -141,11 +156,52 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         if not jd_text.strip():
             raise RuntimeError("Could not extract text from job description. The file appears to be empty.")
 
+        resume_word_count = len(resume_text.split())
+        jd_word_count = len(jd_text.split())
+        _emit_event(job_id, "extract", f"Extracted {resume_word_count:,} words from {resume_filename}",
+                    {"file": resume_filename, "words": resume_word_count})
+        _emit_event(job_id, "extract", f"Extracted {jd_word_count:,} words from {jd_filename}",
+                    {"file": jd_filename, "words": jd_word_count})
+
         logger.info(f"[{job_id}] Extracting skills and mapping to ONET")
         _set_job(job_id, {"message": "Extracting skills and mapping to ONET", "updated_at": _utc_now()})
-        resume_skills = anchor_to_onet(extract_resume_skills(resume_text))
+
+        # --- Resume skills: extract then anchor with per-skill event callback ---
+        resume_skills_raw = extract_resume_skills(resume_text)
+        _emit_event(job_id, "skills", f"LLM extracted {len(resume_skills_raw)} resume skills", {
+            "count": len(resume_skills_raw),
+            "skills": [{"name": s.name, "level": s.proficiency_level, "years": s.years_exp} for s in resume_skills_raw]
+        })
+
+        anchor_events: list[dict] = []
+        def _resume_anchor_cb(skill_name: str, onet_id: str | None, method: str, score: float):
+            icons = {"exact_title": "●", "alias": "⬡", "embedding": "◈", "unmatched": "⚠", "substring": "~"}
+            icon = icons.get(method, "?")
+            label = onet_id or "no match"
+            anchor_events.append({"skill": skill_name, "onet_id": onet_id, "method": method, "score": round(score, 3)})
+            _emit_event(job_id, "anchor",
+                        f"{icon} {skill_name!r} → {label} ({method}, {score:.0%})",
+                        {"skill": skill_name, "onet_id": onet_id, "method": method, "score": round(score, 3), "side": "resume"})
+
+        resume_skills = anchor_to_onet(resume_skills_raw, on_match=_resume_anchor_cb)
+
+        # --- JD skills: extract then anchor ---
         detected_domain, jd_skills_raw = extract_jd_skills(jd_text)
-        jd_skills = anchor_to_onet(jd_skills_raw)
+        _emit_event(job_id, "skills", f"LLM extracted {len(jd_skills_raw)} JD skills · domain: {detected_domain}", {
+            "count": len(jd_skills_raw),
+            "domain": detected_domain,
+            "skills": [{"name": s.name, "level": s.required_level, "required": s.is_required} for s in jd_skills_raw]
+        })
+
+        def _jd_anchor_cb(skill_name: str, onet_id: str | None, method: str, score: float):
+            icons = {"exact_title": "●", "alias": "⬡", "embedding": "◈", "unmatched": "⚠", "substring": "~"}
+            icon = icons.get(method, "?")
+            label = onet_id or "no match"
+            _emit_event(job_id, "anchor",
+                        f"{icon} {skill_name!r} → {label} ({method}, {score:.0%})",
+                        {"skill": skill_name, "onet_id": onet_id, "method": method, "score": round(score, 3), "side": "jd"})
+
+        jd_skills = anchor_to_onet(jd_skills_raw, on_match=_jd_anchor_cb)
         logger.info(f"[{job_id}] Detected domain: {detected_domain}")
         logger.info(f"[{job_id}] Extracted {len(resume_skills)} resume skills, {len(jd_skills)} JD skills")
         
@@ -154,12 +210,32 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         gap_vector = compute_gap_vector(resume_skills, jd_skills)
         logger.info(f"[{job_id}] Computed {len(gap_vector)} gaps")
 
+        top_gaps = gap_vector[:5]
+        _emit_event(job_id, "gap", f"Identified {len(gap_vector)} skill gaps · top: {top_gaps[0].skill_name} (score {top_gaps[0].gap_score:.2f})" if gap_vector else "No skill gaps found", {
+            "total": len(gap_vector),
+            "gaps": [{"skill": g.skill_name, "score": round(g.gap_score, 3), "current": g.current_level, "required": g.required_level} for g in top_gaps]
+        })
+
         if CATALOG is None:
             raise RuntimeError(CATALOG_ERROR or "Course catalog is unavailable")
 
         logger.info(f"[{job_id}] Generating adaptive pathway")
         _set_job(job_id, {"message": "Generating adaptive learning pathway", "updated_at": _utc_now()})
-        pathway = generate_adaptive_pathway(gap_vector, CATALOG, detected_domain=detected_domain)
+        pathway = generate_adaptive_pathway(
+            gap_vector, 
+            CATALOG, 
+            detected_domain=detected_domain,
+            on_event=lambda stage, detail, data=None: _emit_event(job_id, stage, detail, data)
+        )
+
+        # Pathway summary event
+        phase_counts = {p: len(ids) for p, ids in pathway.phases.items() if ids}
+        _emit_event(job_id, "pathway", f"Built pathway: {len(pathway.nodes)} modules · {pathway.total_duration} min total", {
+            "nodes": len(pathway.nodes),
+            "duration_min": pathway.total_duration,
+            "phases": phase_counts,
+            "modules": [{"id": n.module_id, "title": n.title, "phase": n.phase, "duration": n.estimated_duration} for n in pathway.nodes]
+        })
 
         # Compute Metrics
         required_skills = [s for s in jd_skills if s.is_required]
@@ -319,11 +395,16 @@ async def analyze(
 
 
 @app.get("/result/{job_id}")
-def result(job_id: str) -> JSONResponse:
+def result(job_id: str, since: int = 0) -> JSONResponse:
     job = _get_job(job_id)
     if not job:
         return JSONResponse(status_code=200, content={"job_id": job_id, "status": "not_found"})
-    return JSONResponse(status_code=200, content=job)
+    # Return only new events since last poll to avoid re-sending
+    all_events = job.get("events", [])
+    response = {k: v for k, v in job.items() if k != "events"}
+    response["events"] = all_events[since:]
+    response["event_count"] = len(all_events)
+    return JSONResponse(status_code=200, content=response)
 
 
 @app.get("/metrics")

@@ -246,12 +246,26 @@ def _embed_texts(texts: list[str], task_type: str) -> dict[str, list[float]]:
 
 def _get_db_connection():
     import sqlite3
-    db_path = "data/onet.sqlite"
-    if not os.path.exists(db_path):
-        db_path = "../data/onet.sqlite"
-    return sqlite3.connect(db_path)
+    import os
+    from pathlib import Path
+    
+    # Resolve robustly: api/ai/embedder.py -> project_root/data/onet.sqlite
+    root_dir = Path(__file__).resolve().parent.parent.parent
+    db_path = root_dir / "data" / "onet.sqlite"
+    
+    # Fallback just in case script is moved
+    if not db_path.exists():
+        fallback = Path("data/onet.sqlite")
+        if fallback.exists():
+            db_path = fallback
+        else:
+            fallback = Path("../data/onet.sqlite")
+            if fallback.exists():
+                db_path = fallback
+                
+    return sqlite3.connect(str(db_path))
 
-def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
+def anchor_to_onet(skills: list, threshold: float = 0.82, on_match=None) -> list:
     """
     Match a list of ExtractedSkill or JDSkill to canonical O*NET nodes using SQLite.
     Uses multi-stage matching: exact title → alias → common skill map → FTS semantic → substring match.
@@ -269,6 +283,7 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
         
         for skill in skills:
             if skill.onet_id:
+                if on_match: on_match(skill.name, skill.onet_id, "pre_anchored", 1.0)
                 continue
             
             name = _normalize_text(skill.name)
@@ -278,6 +293,7 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
             row = cursor.fetchone()
             if row:
                 skill.onet_id = row[0]
+                if on_match: on_match(skill.name, skill.onet_id, "exact_title", 1.0)
                 continue
             
             # Stage 2: Alias match
@@ -285,18 +301,21 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
             row = cursor.fetchone()
             if row:
                 skill.onet_id = row[0]
+                if on_match: on_match(skill.name, skill.onet_id, "alias", 1.0)
                 continue
             
             # Stage 3: Common tech aliases
             if name in COMMON_SKILL_ALIASES:
                 skill.onet_id = COMMON_SKILL_ALIASES[name]
+                if on_match: on_match(skill.name, skill.onet_id, "alias", 1.0)
                 continue
 
             unresolved.append(skill)
 
         # Stage 4: Gemini embedding semantic retrieval fallback
+        semantic_threshold = threshold if threshold != 0.82 else EMBEDDING_THRESHOLD
+        
         if unresolved and _is_embedding_enabled():
-            semantic_threshold = threshold if threshold != 0.82 else EMBEDDING_THRESHOLD
             query_texts = [_normalize_text(s.name) for s in unresolved]
             query_vectors = _embed_texts(query_texts, task_type="RETRIEVAL_QUERY")
 
@@ -343,6 +362,7 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
 
                 if best_sid and best_score >= semantic_threshold:
                     skill.onet_id = best_sid
+                    if on_match: on_match(skill.name, skill.onet_id, "embedding", best_score)
 
         # Stage 5: conservative substring fallback
         for skill in unresolved:
@@ -354,6 +374,10 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
                 row = cursor.fetchone()
                 if row:
                     skill.onet_id = row[0]
+                    if on_match: on_match(skill.name, skill.onet_id, "substring", 1.0)
+            
+            if not skill.onet_id and on_match:
+                on_match(skill.name, None, "unmatched", 0.0)
     finally:
         conn.close()
     

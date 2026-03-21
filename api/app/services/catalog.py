@@ -34,8 +34,14 @@ class CourseCatalogService:
     @classmethod
     def from_env(cls) -> "CourseCatalogService":
         configured = os.getenv("CATALOG_PATH", "").strip()
+        
+        # Resolve robustly: api/app/services/catalog.py -> project_root/data/catalog/modules.json
+        root_dir = Path(__file__).resolve().parent.parent.parent.parent
+        default_path = str(root_dir / "data" / "catalog" / "modules.json")
+        
         candidate_paths = [
             configured,
+            default_path,
             "data/catalog/modules.json",
             "../data/catalog/modules.json",
             "/workspace/data/catalog/modules.json",

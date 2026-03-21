@@ -66,24 +66,27 @@ Return a JSON array of objects, one per module, with exactly these keys:
 Return ONLY valid JSON array. No explanation. No markdown.
 """
 
-DYNAMIC_MODULE_PROMPT = """
-You are a curriculum designer. A learner has a skill gap that no existing course in our catalog can address.
-Generate a single learning module to fill this gap.
+BATCH_DYNAMIC_MODULE_PROMPT = """
+You are a master curriculum designer. A learner has multiple skill gaps that no existing course in our catalog can address.
+Design a cohesive curriculum of new learning modules to fill these gaps.
+You decide the ideal number of modules to generate to cover these gaps appropriately (up to a maximum).
+Combine related skills into a single module if it makes pedagogical sense, or create dedicated modules for complex distinct skills.
 
-Return a JSON object with these exact keys:
-- "id": a module ID in the format "mod_gen_<short_slug>" (e.g. "mod_gen_cloud_security")
+Return ONLY a JSON array of objects, with each object having these exact keys:
+- "id": a unique module ID in the format "mod_gen_<short_slug>" (e.g. "mod_gen_cloud_security")
 - "title": a concise, professional course title (5-8 words max)
 - "description": a 1-2 sentence course description covering key topics
-- "level": one of "Beginner", "Intermediate", or "Advanced" — pick based on the target level below
+- "level": one of "Beginner", "Intermediate", or "Advanced" based on the target level
 - "duration_min": estimated duration in minutes (30, 45, 60, 90, or 120)
-- "domain": the domain this module belongs to (e.g. "Technology", "Healthcare", "Sales", etc.)
+- "domain": the domain this module belongs to (e.g. "Technology")
+- "skill_ids_covered": array of exactly the ONET IDs from the provided gaps list that this module addresses
 
 Context:
-- Skill name: {skill_name}
 - Target domain: {domain}
-- Learner current level: {current_level} (0=none, 1=junior, 2=mid, 3=senior)
-- Required level: {required_level}
-- Gap importance: {importance}
+- Maximum modules allowed: {max_llm}
 
-Return ONLY valid JSON object. No explanation. No markdown. No extra text.
+Skill Gaps to Cover:
+{gaps_json}
+
+Return ONLY a valid JSON array. No explanation. No markdown. No extra text.
 """

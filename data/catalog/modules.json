@@ -1470,5 +1470,123 @@
     "prerequisites": [
       "mod_consc_foundations"
     ]
+  },
+  {
+    "id": "mod_gen_nodejs_mastery",
+    "title": "Mastering Node.js: Advanced Server-Side Development",
+    "description": "Explore advanced Node.js concepts including microservices, performance optimization, and security best practices for building scalable and robust server-side applications.",
+    "skill_ids": [
+      "TECH-3b2819dd4c24"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_mongodb_essentials",
+    "title": "MongoDB Essentials: Document Database Fundamentals",
+    "description": "Learn MongoDB basics, including data modeling, querying, and indexing, to effectively manage document-oriented databases.",
+    "skill_ids": [
+      "TECH-206e3718af09"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_nosql_fundamentals",
+    "title": "NoSQL Database Fundamentals: Concepts and Usage",
+    "description": "Explore NoSQL database concepts, data modeling techniques, and practical implementation strategies for diverse applications.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_react_advanced",
+    "title": "Advanced React.js: Patterns and Performance",
+    "description": "Master advanced React.js patterns, state management techniques, and performance optimization strategies for building scalable applications.",
+    "skill_ids": [
+      "TECH-50ce2da63bea"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 60,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_git_intermediate",
+    "title": "Git Version Control: Intermediate Workflow Mastery",
+    "description": "Enhance your Git skills with advanced branching strategies, conflict resolution techniques, and collaborative workflow practices.",
+    "skill_ids": [
+      "TECH-0bcc70105ad2"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 45,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_nosql",
+    "title": "Introduction to NoSQL Databases",
+    "description": "Learn the fundamentals of NoSQL databases, including data models and query techniques.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_react_adv",
+    "title": "Advanced React.js Development Techniques",
+    "description": "Master advanced React.js concepts and best practices for building scalable applications.",
+    "skill_ids": [
+      "TECH-50ce2da63bea"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_nosql_foundations",
+    "title": "NoSQL Database Fundamentals: Concepts and Implementation",
+    "description": "Explore NoSQL database concepts, data models, and practical implementation techniques. Learn to design and query NoSQL databases effectively.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
+  },
+  {
+    "id": "mod_gen_cloud_db",
+    "title": "Cloud Databases: NoSQL on AWS & GCP",
+    "description": "Learn NoSQL database principles and their practical implementation on Amazon Web Services (AWS) and Google Cloud Platform (GCP). This module explores database design, deployment, and management in cloud environments.",
+    "skill_ids": [
+      "TECH-801d32a0f0c9",
+      "TECH-bddedb19a95d"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 90,
+    "prerequisites": [],
+    "_auto_generated": true
   }
 ]

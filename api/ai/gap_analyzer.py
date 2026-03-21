@@ -57,25 +57,61 @@ def compute_gap_vector(
     gaps.sort(key=lambda g: g.gap_score, reverse=True)
     return gaps
 
-# Hard caps to keep pathways focused and scannable
-MAX_GAPS_TO_COVER = 6        # Only address top-N highest-priority gaps
-MAX_LLM_GENERATED = 2        # LLM fallback modules at most
-MAX_PATHWAY_NODES = 12       # Total node ceiling after prerequisite expansion
+def _compute_pathway_caps(gaps: List[GapItem], catalog: 'CourseCatalogService') -> tuple[int, int, int]:
+    """
+    Dynamically derive pathway size limits from the actual gap data instead of
+    using fixed constants. This means:
+    - A small resume vs a simple JD → tight, focused 4-6 node path
+    - A complex multi-skill JD     → richer 14-16 node path
+
+    Returns (max_gaps_to_cover, max_llm_generated, max_pathway_nodes).
+    """
+    total_gaps = len(gaps)
+    if total_gaps == 0:
+        return (0, 0, 0)
+
+    # --- MAX_GAPS_TO_COVER ---
+    # Target top 60% of gaps, minimum 5, maximum 15. High-importance always counts.
+    high_priority = sum(1 for g in gaps if g.gap_score > 1.5)
+    proportional = max(5, round(total_gaps * 0.6))
+    max_gaps = min(max(proportional, high_priority), 15)
+
+    # --- MAX_LLM_GENERATED ---
+    # How many top gaps have NO catalog coverage at all? Includes unmatched ONET IDs.
+    uncovered_count = sum(
+        1 for g in gaps[:max_gaps]
+        if not g.onet_id or not catalog.modules_by_skill.get(g.onet_id)
+    )
+    # Be more generous with LLM-generated modules to cover gaps, maxing out at 6.
+    max_llm = min(max(2, uncovered_count), 6)
+
+    # --- MAX_PATHWAY_NODES ---
+    # Allow 2.5× the gaps we're targeting to make room for complex prereq graphs.
+    max_nodes = min(max(8, round(max_gaps * 2.5)), 25)
+
+    return (max_gaps, max_llm, max_nodes)
 
 def generate_adaptive_pathway(
     gaps: List[GapItem],
     catalog: CourseCatalogService,
-    detected_domain: str = "Technology"
+    detected_domain: str = "Technology",
+    on_event = None
 ) -> AdaptivePathway:
     """
     Constructs a topologically sorted learning path based on skill gaps.
     HYBRID: Uses catalog modules when available, generates LLM modules for uncovered gaps.
-    1. Identify target modules for the TOP gaps from catalog (capped).
-    2. For uncovered gaps, dynamically generate modules via LLM (capped).
-    3. Expand prerequisites to build a DAG (capped at MAX_PATHWAY_NODES).
-    4. Topologically sort the DAG.
-    5. Group into phases.
+    1. Derive dynamic caps from the gap data (scale with complexity).
+    2. Identify target modules for the TOP gaps from catalog (capped).
+    3. For uncovered gaps, dynamically generate modules via LLM (capped).
+    4. Expand prerequisites to build a DAG (capped dynamically).
+    5. Topologically sort the DAG.
+    6. Group into phases.
     """
+
+    # Derive all limits dynamically from the actual gap data
+    MAX_GAPS_TO_COVER, MAX_LLM_GENERATED, MAX_PATHWAY_NODES = _compute_pathway_caps(gaps, catalog)
+    print(f"[Pathway] Dynamic caps → gaps={MAX_GAPS_TO_COVER}, llm={MAX_LLM_GENERATED}, nodes={MAX_PATHWAY_NODES} (from {len(gaps)} total gaps)")
+
 
     # --- Step 1: Identify target modules from catalog (top gaps only) ---
     target_modules_map: Dict[str, CatalogModule] = {}
@@ -109,49 +145,57 @@ def generate_adaptive_pathway(
     if uncovered_gaps:
         try:
             from ai.extractor import _call_llm
-            from ai.prompts import DYNAMIC_MODULE_PROMPT
+            from ai.prompts import BATCH_DYNAMIC_MODULE_PROMPT
             import json
             import re
 
-            # Only generate LLM modules for the top uncovered gaps, not all of them
-            for gap in uncovered_gaps[:MAX_LLM_GENERATED]:
+            gaps_to_cover = uncovered_gaps[:max(MAX_LLM_GENERATED, 6)]
+            gaps_data = [
+                {
+                    "skill_name": g.skill_name,
+                    "onet_id": g.onet_id,
+                    "current_level": g.current_level,
+                    "required_level": g.required_level,
+                    "importance": g.importance
+                }
+                for g in gaps_to_cover
+            ]
+            
+            try:
+                prompt = BATCH_DYNAMIC_MODULE_PROMPT.format(
+                    domain=detected_domain,
+                    max_llm=MAX_LLM_GENERATED,
+                    gaps_json=json.dumps(gaps_data, indent=2)
+                )
+                raw = _call_llm(prompt)
+                cleaned = re.sub(r"```json|```", "", raw).strip()
+                
                 try:
-                    prompt = DYNAMIC_MODULE_PROMPT.format(
-                        skill_name=gap.skill_name,
-                        domain=detected_domain,
-                        current_level=gap.current_level,
-                        required_level=gap.required_level,
-                        importance=gap.importance
-                    )
-                    raw = _call_llm(prompt)
-                    cleaned = re.sub(r"```json|```", "", raw).strip()
-                    
-                    # Try to parse as JSON object
-                    try:
-                        module_data = json.loads(cleaned)
-                    except json.JSONDecodeError:
-                        match = re.search(r'\{.*\}', cleaned, re.DOTALL)
-                        if match:
-                            module_data = json.loads(match.group())
-                        else:
-                            continue
-                    
-                    gen_module = CatalogModule(
-                        id=module_data.get("id", f"mod_gen_{gap.skill_name.lower().replace(' ', '_')[:20]}"),
-                        title=module_data.get("title", f"{gap.skill_name} Essentials"),
-                        description=module_data.get("description", f"Covers essential concepts in {gap.skill_name}."),
-                        skill_ids=[gap.onet_id] if gap.onet_id else [],
-                        domain=module_data.get("domain", detected_domain),
-                        level=module_data.get("level", "Beginner"),
-                        duration_min=int(module_data.get("duration_min", 60)),
-                        prerequisites=[]
-                    )
-                    generated_modules[gen_module.id] = gen_module
-                    target_modules_map[gen_module.id] = gen_module
-                    
-                except Exception as e:
-                    print(f"[Pathway] Failed to generate module for '{gap.skill_name}': {e}")
-                    continue
+                    module_list = json.loads(cleaned)
+                except json.JSONDecodeError:
+                    match = re.search(r'\[.*\]', cleaned, re.DOTALL)
+                    if match:
+                        module_list = json.loads(match.group())
+                    else:
+                        module_list = []
+                
+                if isinstance(module_list, list):
+                    for idx, module_data in enumerate(module_list[:MAX_LLM_GENERATED]):
+                        gen_module = CatalogModule(
+                            id=module_data.get("id", f"mod_gen_batch_{idx}_{abs(hash(module_data.get('title', 'idx')))}"),
+                            title=module_data.get("title", "Foundational Concepts"),
+                            description=module_data.get("description", "Auto-generated coverage module."),
+                            skill_ids=module_data.get("skill_ids_covered", []),
+                            domain=module_data.get("domain", detected_domain),
+                            level=module_data.get("level", "Beginner"),
+                            duration_min=int(module_data.get("duration_min", 60)),
+                            prerequisites=[]
+                        )
+                        generated_modules[gen_module.id] = gen_module
+                        target_modules_map[gen_module.id] = gen_module
+                        
+            except Exception as e:
+                print(f"[Pathway] Failed batch module generation: {e}")
         except ImportError:
             print("[Pathway] LLM imports not available, skipping dynamic generation")
 
@@ -328,7 +372,7 @@ def generate_adaptive_pathway(
 
     # --- Step 7: Auto-expand Catalog with LLM-generated modules ---
     if generated_modules:
-        _persist_generated_modules(generated_modules)
+        _persist_generated_modules(generated_modules, on_event)
 
     return AdaptivePathway(
         nodes=path_nodes,
@@ -338,7 +382,7 @@ def generate_adaptive_pathway(
     )
 
 
-def _persist_generated_modules(generated_modules: Dict[str, 'CatalogModule']) -> None:
+def _persist_generated_modules(generated_modules: Dict[str, 'CatalogModule'], on_event=None) -> None:
     """
     Append LLM-generated modules to modules.json so the catalog grows over time.
     Only adds modules whose IDs don't already exist in the catalog file.
@@ -347,8 +391,12 @@ def _persist_generated_modules(generated_modules: Dict[str, 'CatalogModule']) ->
     import json
     import os
     from pathlib import Path
+    # Resolve robustly: api/ai/gap_analyzer.py -> project_root/data/catalog/modules.json
+    root_dir = Path(__file__).resolve().parent.parent.parent
+    default_path = str(root_dir / "data" / "catalog" / "modules.json")
 
     candidate_paths = [
+        default_path,
         "data/catalog/modules.json",
         "../data/catalog/modules.json",
     ]
@@ -386,5 +434,7 @@ def _persist_generated_modules(generated_modules: Dict[str, 'CatalogModule']) ->
             with catalog_path.open("w", encoding="utf-8") as f:
                 json.dump(existing, f, indent=2, ensure_ascii=False)
             print(f"[Catalog] Auto-expanded: added {len(new_modules)} LLM-generated module(s)")
+            if on_event:
+                on_event("catalog", f"Auto-expanded catalog: +{len(new_modules)} new module(s) saved", {"count": len(new_modules)})
     except Exception as e:
         print(f"[Catalog] Auto-expansion failed (non-fatal): {e}")
