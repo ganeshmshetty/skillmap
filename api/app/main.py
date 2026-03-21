@@ -136,6 +136,11 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
         resume_text = extract_text(resume_bytes, resume_filename)
         jd_text = extract_text(jd_bytes, jd_filename)
 
+        if not resume_text.strip():
+            raise RuntimeError("Could not extract text from resume. If this is a scanned PDF, please use an OCR-converted version.")
+        if not jd_text.strip():
+            raise RuntimeError("Could not extract text from job description. The file appears to be empty.")
+
         logger.info(f"[{job_id}] Extracting skills and mapping to ONET")
         _set_job(job_id, {"message": "Extracting skills and mapping to ONET", "updated_at": _utc_now()})
         resume_skills = anchor_to_onet(extract_resume_skills(resume_text))
@@ -213,6 +218,7 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
             resume_skills=resume_skills,
             jd_skills=jd_skills,
             gap_vector=gap_vector,
+            detected_domain=detected_domain,
             pathway=pathway,
             reasoning_traces=traces,
             coverage_score=round(coverage, 4),

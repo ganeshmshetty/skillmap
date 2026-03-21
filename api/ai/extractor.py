@@ -29,7 +29,7 @@ def _call_llm(prompt: str, max_retries: int = 3) -> str:
                 raise
     # Final attempt without catching
     response = client.models.generate_content(
-        model="gemini-flash-latest",
+        model="gemini-2.0-flash",
         contents=prompt,
     )
     return response.text
@@ -46,7 +46,7 @@ def _parse_json_safely(raw: str) -> list:
 
 def extract_resume_skills(resume_text: str) -> list[ExtractedSkill]:
 
-    prompt = RESUME_EXTRACTION_PROMPT.format(resume_text=resume_text[:4000])
+    prompt = RESUME_EXTRACTION_PROMPT.format(resume_text=resume_text[:30000])
     raw = _call_llm(prompt)
     items = _parse_json_safely(raw)
 
@@ -68,7 +68,7 @@ def extract_jd_skills(jd_text: str) -> tuple[str, list[JDSkill]]:
     Returns (detected_domain, list_of_jd_skills).
     The LLM now returns a JSON object with 'detected_domain' and 'skills'.
     """
-    prompt = JD_EXTRACTION_PROMPT.format(jd_text=jd_text[:4000])
+    prompt = JD_EXTRACTION_PROMPT.format(jd_text=jd_text[:30000])
     raw = _call_llm(prompt)
     
     # Parse the response — could be a dict (new format) or list (old format)

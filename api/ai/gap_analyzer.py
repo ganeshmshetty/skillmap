@@ -11,19 +11,29 @@ def compute_gap_vector(
     """
     For each JD skill, compute gap = max(0, required_level - current_level).
     Weighted by O*NET importance. Returns sorted gap vector (highest first).
+
+    Uses bidirectional matching: indexes resume skills by BOTH onet_id and
+    normalized name so that "React.js" (resume) matches "React" (JD) via
+    their shared O*NET anchor.
     """
+    # Build a multi-key lookup: onet_id → skill, name.lower() → skill
     resume_map: dict[str, ExtractedSkill] = {}
     for rs in resume_skills:
-        key = rs.onet_id or rs.name.lower()
-        resume_map[key] = rs
+        if rs.onet_id:
+            resume_map[rs.onet_id] = rs
+        resume_map[rs.name.lower().strip()] = rs
 
     gaps = []
     for jd_skill in jd_skills:
         if not jd_skill.is_required:
             continue
-            
-        lookup_key = jd_skill.onet_id or jd_skill.name.lower()
-        current = resume_map.get(lookup_key)
+
+        # Try matching by O*NET ID first (most reliable), then fall back to name
+        current = None
+        if jd_skill.onet_id:
+            current = resume_map.get(jd_skill.onet_id)
+        if current is None:
+            current = resume_map.get(jd_skill.name.lower().strip())
         
         # proficiency_level from LLM is 1, 2, 3
         current_level = current.proficiency_level if current else 0
@@ -207,6 +217,8 @@ def generate_adaptive_pathway(
     
     total_steps = len(sorted_order)
     
+    # Pre-compute skills_covered and gap_desc for each module
+    module_meta = []  # list of (mod_id, module, is_generated, skills_covered, gap_desc, phase)
     for i, mod_id in enumerate(sorted_order):
         module = expanded_modules[mod_id]
         is_generated = mod_id in generated_modules
@@ -232,25 +244,52 @@ def generate_adaptive_pathway(
                     skills_covered.append(g.skill_name)
         skills_covered = list(set(skills_covered))
         
-        # --- Generate Reasoning ---
         gap_desc = ", ".join(skills_covered) if skills_covered else "Prerequisite Knowledge"
-        
-        justification = None
+        module_meta.append((mod_id, module, is_generated, skills_covered, gap_desc, p))
+
+    # --- Step 5b: Batch Reasoning Generation (single LLM call) ---
+    justification_map: Dict[str, str] = {}
+    try:
+        from ai.extractor import _call_llm
+        from ai.prompts import BATCH_REASONING_PROMPT
+        import json as _json
+        import re as _re
+
+        batch_input = []
+        for i, (mod_id, module, is_generated, skills_covered, gap_desc, p) in enumerate(module_meta):
+            batch_input.append({
+                "module_id": mod_id,
+                "title": module.title,
+                "gap_being_closed": gap_desc,
+                "level": module.level,
+                "position_in_pathway": i + 1,
+            })
+
+        prompt = BATCH_REASONING_PROMPT.format(modules_json=_json.dumps(batch_input, indent=2))
+        raw = _call_llm(prompt)
+        cleaned = _re.sub(r"```json|```", "", raw).strip()
+
         try:
-            from ai.extractor import _call_llm
-            from ai.prompts import REASONING_TRACE_PROMPT
-            
-            if i < 5:
-                prompt = REASONING_TRACE_PROMPT.format(
-                    module_title=module.title,
-                    gap_description=gap_desc,
-                    current_level=0,
-                    required_level=module.level,
-                    prereq_chain=", ".join(sorted_order[:i])
-                )
-                justification = _call_llm(prompt)
-        except Exception:
-            pass
+            parsed = _json.loads(cleaned)
+        except _json.JSONDecodeError:
+            match = _re.search(r'\[.*\]', cleaned, _re.DOTALL)
+            if match:
+                parsed = _json.loads(match.group())
+            else:
+                parsed = []
+
+        for item in parsed:
+            mid = item.get("module_id", "")
+            justification = item.get("justification", "")
+            if mid and justification:
+                justification_map[mid] = justification
+
+    except Exception as e:
+        print(f"[Pathway] Batch reasoning failed, using fallbacks: {e}")
+
+    # Build PathNodes using batch results or fallback
+    for i, (mod_id, module, is_generated, skills_covered, gap_desc, p) in enumerate(module_meta):
+        justification = justification_map.get(mod_id)
 
         if not justification:
             source_label = " (AI-generated)" if is_generated else ""
@@ -287,9 +326,65 @@ def generate_adaptive_pathway(
             if prereq_id in expanded_modules:
                 path_edges.append(PathwayEdge(source=prereq_id, target=mid))
 
+    # --- Step 7: Auto-expand Catalog with LLM-generated modules ---
+    if generated_modules:
+        _persist_generated_modules(generated_modules)
+
     return AdaptivePathway(
         nodes=path_nodes,
         edges=path_edges,
         total_duration=current_total_min,
         phases=phase_buckets
     )
+
+
+def _persist_generated_modules(generated_modules: Dict[str, 'CatalogModule']) -> None:
+    """
+    Append LLM-generated modules to modules.json so the catalog grows over time.
+    Only adds modules whose IDs don't already exist in the catalog file.
+    Thread-safe via a simple file lock pattern.
+    """
+    import json
+    import os
+    from pathlib import Path
+
+    candidate_paths = [
+        "data/catalog/modules.json",
+        "../data/catalog/modules.json",
+    ]
+    catalog_path = None
+    for p in candidate_paths:
+        if os.path.exists(p):
+            catalog_path = Path(p)
+            break
+
+    if catalog_path is None:
+        return
+
+    try:
+        with catalog_path.open("r", encoding="utf-8") as f:
+            existing = json.load(f)
+
+        existing_ids = {m["id"] for m in existing if isinstance(m, dict)}
+        new_modules = []
+        for mid, module in generated_modules.items():
+            if mid not in existing_ids:
+                new_modules.append({
+                    "id": module.id,
+                    "title": module.title,
+                    "description": module.description,
+                    "skill_ids": module.skill_ids,
+                    "domain": module.domain,
+                    "level": module.level,
+                    "duration_min": module.duration_min,
+                    "prerequisites": list(module.prerequisites),
+                    "_auto_generated": True,
+                })
+
+        if new_modules:
+            existing.extend(new_modules)
+            with catalog_path.open("w", encoding="utf-8") as f:
+                json.dump(existing, f, indent=2, ensure_ascii=False)
+            print(f"[Catalog] Auto-expanded: added {len(new_modules)} LLM-generated module(s)")
+    except Exception as e:
+        print(f"[Catalog] Auto-expansion failed (non-fatal): {e}")

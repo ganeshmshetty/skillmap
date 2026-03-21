@@ -47,6 +47,25 @@ Prerequisite chain so far: {prereq_chain}
 Return ONLY the justification text. No JSON. No bullet points.
 """
 
+BATCH_REASONING_PROMPT = """
+You are an adaptive learning coach. A learner has been assigned the following modules to close skill gaps.
+For EACH module, write a 2-3 sentence justification explaining:
+1. Which gap this module closes
+2. Why it must come at this point in the pathway
+3. What capability it unlocks next
+
+Be specific and grounded. Do NOT suggest other modules.
+
+Modules (in learning order):
+{modules_json}
+
+Return a JSON array of objects, one per module, with exactly these keys:
+- "module_id": the module ID from the input
+- "justification": your 2-3 sentence justification
+
+Return ONLY valid JSON array. No explanation. No markdown.
+"""
+
 DYNAMIC_MODULE_PROMPT = """
 You are a curriculum designer. A learner has a skill gap that no existing course in our catalog can address.
 Generate a single learning module to fill this gap.
