@@ -1,0 +1,49 @@
+﻿=== Found O*NET IDs ===
+  Apache Kafka: TECH-5dd9422f45dc
+  C#: TECH-2e26e62208e9
+  C++: TECH-372946aa2608
+  Docker: TECH-e982f17bcbe0
+  Git: TECH-46f1a0bd5592
+  Go: TECH-1ec558a60b5d
+  GraphQL: TECH-9fdcc7f29c59
+  JavaScript: TECH-b6e13ad53d8e
+  Kubernetes: TECH-adc1f5c8707f
+  Linux: TECH-ba324ca7b1c7
+  MongoDB: TECH-7f1c982e835a
+  MySQL: TECH-f460c882a18c
+  NoSQL: TECH-e6c5f6d71fd5
+  Node.js: TECH-90de35a5800e
+  PostgreSQL: TECH-519968cbed98
+  PyTorch: TECH-dfecc9eaf34d
+  Python: TECH-4235227b5143
+  RabbitMQ: TECH-d37a9628bc10
+  React: TECH-6b810c90aa9a
+  Redis: TECH-b840fc02d524
+  Ruby: TECH-18e40e1401ee
+  TensorFlow: TECH-3d3f421e9db6
+  TypeScript: TECH-fb9da861bdb8
+
+=== Not Found (23) ===
+  Java
+  Rust
+  SQL
+  Angular
+  Machine learning
+  Amazon Web Services
+  Microsoft Azure
+  Google Cloud Platform
+  REST APIs
+  gRPC
+  HTML
+  CSS
+  Jenkins
+  Terraform
+  Ansible
+  Agile
+  Scrum
+  Data analysis
+  Data visualization
+  Cybersecurity
+  Network security
+  DevOps
+  CI/CD

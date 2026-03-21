@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import ReactFlow, {
     Background,
     Controls,
@@ -97,18 +97,17 @@ export default function PathwayFlowGraph({ pathway, onSelectModule }) {
         [rawNodes, rawEdges]
     );
 
-    // Inject the onSelect callback into each node's data
-    const nodesWithCallback = useMemo(
-        () =>
-            initialNodes.map((n) => ({
-                ...n,
-                data: { ...n.data, onSelect: onSelectModule },
-            })),
-        [initialNodes, onSelectModule]
-    );
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-    const [nodes, , onNodesChange] = useNodesState(nodesWithCallback);
-    const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+    // Sync state when initial layout changes (important for async data)
+    useEffect(() => {
+        setNodes(initialNodes.map(n => ({
+            ...n,
+            data: { ...n.data, onSelect: onSelectModule }
+        })));
+        setEdges(initialEdges);
+    }, [initialNodes, initialEdges, onSelectModule, setNodes, setEdges]);
 
     if (rawNodes.length === 0) return null;
 

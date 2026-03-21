@@ -1,0 +1,11 @@
+
+Senior Full-Stack Engineer
+Requirements:
+- 5+ years experience with Python and JavaScript
+- Expert in React.js and Node.js
+- Strong experience with Docker and Kubernetes
+- Experience with PostgreSQL and MongoDB/NoSQL databases
+- Knowledge of Apache Kafka for event-driven architecture
+- Experience with TensorFlow or PyTorch for ML pipelines
+- Proficiency with Git and Linux
+- Cloud infrastructure (AWS/GCP)

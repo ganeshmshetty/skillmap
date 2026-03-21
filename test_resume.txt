@@ -1,0 +1,6 @@
+
+John Smith - Software Engineer
+5 years of experience in Python, JavaScript, and React.
+Built microservices with Docker and deployed on Kubernetes.
+Experienced with PostgreSQL and Redis for data storage.
+Familiar with Git, Linux, and CI/CD pipelines.

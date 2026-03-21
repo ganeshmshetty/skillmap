@@ -1,154 +1,479 @@
 [
   {
-    "id": "mod_80808627",
-    "title": "Advanced Commercial kitchen steamers Mastery",
-    "description": "A comprehensive advanced module focusing on Commercial kitchen steamers.",
+    "id": "mod_py_foundations",
+    "title": "Python Foundations",
+    "description": "Core Python syntax, data structures, OOP, and standard library essentials.",
     "skill_ids": [
-      "TOOL-0ad8364d760d"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_94407fd7",
-    "title": "Advanced Landport Systems Landport Mastery",
-    "description": "A comprehensive advanced module focusing on Landport Systems Landport.",
-    "skill_ids": [
-      "TECH-7b0c4e6d47e3"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_1166e0e6",
-    "title": "Introduction to Landport Systems Landport",
-    "description": "A comprehensive beginner module focusing on Landport Systems Landport.",
-    "skill_ids": [
-      "TECH-7b0c4e6d47e3"
+      "TECH-4235227b5143"
     ],
     "domain": "Technology",
     "level": "Beginner",
-    "duration_min": 45,
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_py_intermediate",
+    "title": "Intermediate Python",
+    "description": "Decorators, generators, async/await, type hints, and packaging.",
+    "skill_ids": [
+      "TECH-4235227b5143"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
     "prerequisites": [
-      "mod_80808627"
+      "mod_py_foundations"
     ]
   },
   {
-    "id": "mod_2aff84a6",
-    "title": "Advanced Amadeus CRS Mastery",
-    "description": "A comprehensive advanced module focusing on Amadeus CRS.",
+    "id": "mod_py_advanced",
+    "title": "Advanced Python Engineering",
+    "description": "Metaclasses, C extensions, memory profiling, and production-grade patterns.",
     "skill_ids": [
-      "TECH-fbd517cf977e"
+      "TECH-4235227b5143"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_bfc74363",
-    "title": "Introduction to Torque angle meters",
-    "description": "A comprehensive beginner module focusing on Torque angle meters.",
-    "skill_ids": [
-      "TOOL-beca219d601c"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
     "prerequisites": [
-      "mod_2aff84a6"
+      "mod_py_intermediate"
     ]
   },
   {
-    "id": "mod_2beb56a5",
-    "title": "Introduction to Torque angle meters",
-    "description": "A comprehensive beginner module focusing on Torque angle meters.",
+    "id": "mod_js_foundations",
+    "title": "JavaScript Foundations",
+    "description": "ES6+ syntax, DOM manipulation, closures, promises, and event loop.",
     "skill_ids": [
-      "TOOL-beca219d601c"
+      "TECH-b6e13ad53d8e"
     ],
-    "domain": "Tools",
+    "domain": "Technology",
     "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_bfc74363"
-    ]
-  },
-  {
-    "id": "mod_894253c7",
-    "title": "Advanced Power spinners Mastery",
-    "description": "A comprehensive advanced module focusing on Power spinners.",
-    "skill_ids": [
-      "TOOL-84c8f957bc41"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
+    "duration_min": 60,
     "prerequisites": []
   },
   {
-    "id": "mod_de2d25ee",
-    "title": "Advanced Profitool software (human resources feature) Mastery",
-    "description": "A comprehensive advanced module focusing on Profitool software (human resources feature).",
+    "id": "mod_js_advanced",
+    "title": "Advanced JavaScript & TypeScript",
+    "description": "Advanced patterns, TypeScript generics, module systems, and build tooling.",
     "skill_ids": [
-      "TECH-06f400d6894c"
+      "TECH-b6e13ad53d8e",
+      "TECH-fb9da861bdb8"
     ],
     "domain": "Technology",
     "level": "Advanced",
-    "duration_min": 180,
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_js_foundations"
+    ]
+  },
+  {
+    "id": "mod_ts_fundamentals",
+    "title": "TypeScript Fundamentals",
+    "description": "Static typing, interfaces, generics, and TypeScript tooling.",
+    "skill_ids": [
+      "TECH-fb9da861bdb8"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 60,
+    "prerequisites": [
+      "mod_js_foundations"
+    ]
+  },
+  {
+    "id": "mod_go_foundations",
+    "title": "Go Programming Foundations",
+    "description": "Go syntax, goroutines, channels, interfaces, and error handling.",
+    "skill_ids": [
+      "TECH-1ec558a60b5d"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
     "prerequisites": []
   },
   {
-    "id": "mod_e52564ea",
-    "title": "Introduction to Profitool software (human resources feature)",
-    "description": "A comprehensive beginner module focusing on Profitool software (human resources feature).",
+    "id": "mod_go_advanced",
+    "title": "Advanced Go Engineering",
+    "description": "Concurrency patterns, reflection, CGo, performance tuning.",
     "skill_ids": [
-      "TECH-06f400d6894c"
+      "TECH-1ec558a60b5d"
     ],
     "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 45,
+    "level": "Advanced",
+    "duration_min": 120,
     "prerequisites": [
-      "mod_80808627"
+      "mod_go_foundations"
     ]
   },
   {
-    "id": "mod_812cba74",
-    "title": "Introduction to FileMaker Bento",
-    "description": "A comprehensive beginner module focusing on FileMaker Bento.",
+    "id": "mod_cpp_foundations",
+    "title": "C++ Foundations",
+    "description": "C++ syntax, pointers, memory management, STL, templates.",
     "skill_ids": [
-      "TECH-77b7324a590a"
+      "TECH-372946aa2608"
     ],
     "domain": "Technology",
     "level": "Beginner",
-    "duration_min": 30,
+    "duration_min": 90,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_cpp_advanced",
+    "title": "Advanced C++ & Modern Standards",
+    "description": "C++17/20 features, smart pointers, move semantics, multithreading.",
+    "skill_ids": [
+      "TECH-372946aa2608"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
     "prerequisites": [
-      "mod_894253c7"
+      "mod_cpp_foundations"
     ]
   },
   {
-    "id": "mod_de3f3ff6",
-    "title": "Introduction to FileMaker Bento",
-    "description": "A comprehensive beginner module focusing on FileMaker Bento.",
+    "id": "mod_csharp_fundamentals",
+    "title": "C# & .NET Fundamentals",
+    "description": "C# syntax, LINQ, async patterns, and .NET ecosystem.",
     "skill_ids": [
-      "TECH-77b7324a590a"
+      "TECH-2e26e62208e9"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_ruby_fundamentals",
+    "title": "Ruby Programming Fundamentals",
+    "description": "Ruby syntax, blocks, metaprogramming, and Rails basics.",
+    "skill_ids": [
+      "TECH-18e40e1401ee"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_react_basics",
+    "title": "React.js Fundamentals",
+    "description": "JSX, components, hooks, state management, and React ecosystem.",
+    "skill_ids": [
+      "TECH-6b810c90aa9a"
     ],
     "domain": "Technology",
     "level": "Beginner",
     "duration_min": 60,
     "prerequisites": [
-      "mod_bfc74363"
+      "mod_js_foundations"
     ]
   },
   {
-    "id": "mod_cf9db737",
-    "title": "Freight+ Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Freight+.",
+    "id": "mod_react_advanced",
+    "title": "Advanced React Patterns",
+    "description": "Context API, Redux, performance optimization, SSR, and testing.",
     "skill_ids": [
-      "TECH-a5dd28680702"
+      "TECH-6b810c90aa9a"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_react_basics"
+    ]
+  },
+  {
+    "id": "mod_node_fundamentals",
+    "title": "Node.js Fundamentals",
+    "description": "Server-side JavaScript, Express, middleware, and REST API design.",
+    "skill_ids": [
+      "TECH-90de35a5800e"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": [
+      "mod_js_foundations"
+    ]
+  },
+  {
+    "id": "mod_node_advanced",
+    "title": "Advanced Node.js",
+    "description": "Streams, clustering, microservices, and production deployment.",
+    "skill_ids": [
+      "TECH-90de35a5800e"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_node_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_git_version_control",
+    "title": "Git & Version Control",
+    "description": "Branching strategies, rebasing, cherry-picking, and collaborative workflows.",
+    "skill_ids": [
+      "TECH-46f1a0bd5592"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 30,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_linux_essentials",
+    "title": "Linux System Administration Essentials",
+    "description": "Shell scripting, file systems, process management, networking, and permissions.",
+    "skill_ids": [
+      "TECH-ba324ca7b1c7"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_linux_advanced",
+    "title": "Advanced Linux Administration",
+    "description": "Kernel tuning, systemd, security hardening, and containerization foundations.",
+    "skill_ids": [
+      "TECH-ba324ca7b1c7"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_linux_essentials"
+    ]
+  },
+  {
+    "id": "mod_docker_fundamentals",
+    "title": "Docker Containerization",
+    "description": "Dockerfile, images, containers, volumes, networking, and Docker Compose.",
+    "skill_ids": [
+      "TECH-e982f17bcbe0"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": [
+      "mod_linux_essentials"
+    ]
+  },
+  {
+    "id": "mod_docker_advanced",
+    "title": "Advanced Docker & Container Orchestration",
+    "description": "Multi-stage builds, security scanning, Swarm, and production patterns.",
+    "skill_ids": [
+      "TECH-e982f17bcbe0"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_docker_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_k8s_fundamentals",
+    "title": "Kubernetes Fundamentals",
+    "description": "Pods, deployments, services, ConfigMaps, and kubectl essentials.",
+    "skill_ids": [
+      "TECH-adc1f5c8707f"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_docker_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_k8s_advanced",
+    "title": "Advanced Kubernetes Operations",
+    "description": "Helm, Operators, RBAC, Istio service mesh, and cluster management.",
+    "skill_ids": [
+      "TECH-adc1f5c8707f"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_k8s_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_postgresql_fundamentals",
+    "title": "PostgreSQL Database Fundamentals",
+    "description": "SQL queries, schema design, indexing, transactions, and performance tuning.",
+    "skill_ids": [
+      "TECH-519968cbed98"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_postgresql_advanced",
+    "title": "Advanced PostgreSQL",
+    "description": "Query optimization, replication, partitioning, and PL/pgSQL.",
+    "skill_ids": [
+      "TECH-519968cbed98"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_postgresql_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_mysql_fundamentals",
+    "title": "MySQL Database Fundamentals",
+    "description": "MySQL setup, queries, joins, stored procedures, and InnoDB engine.",
+    "skill_ids": [
+      "TECH-f460c882a18c"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_mongodb_fundamentals",
+    "title": "MongoDB & NoSQL Fundamentals",
+    "description": "Document model, CRUD operations, aggregation pipelines, and indexing.",
+    "skill_ids": [
+      "TECH-7f1c982e835a",
+      "TECH-e6c5f6d71fd5"
+    ],
+    "domain": "Technology",
+    "level": "Beginner",
+    "duration_min": 60,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_mongodb_advanced",
+    "title": "Advanced MongoDB & NoSQL Patterns",
+    "description": "Sharding, replication, schema design patterns, and Atlas deployment.",
+    "skill_ids": [
+      "TECH-7f1c982e835a",
+      "TECH-e6c5f6d71fd5"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 90,
+    "prerequisites": [
+      "mod_mongodb_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_redis_fundamentals",
+    "title": "Redis In-Memory Data Store",
+    "description": "Data structures, caching patterns, pub/sub, and Redis Cluster.",
+    "skill_ids": [
+      "TECH-b840fc02d524"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 45,
+    "prerequisites": []
+  },
+  {
+    "id": "mod_graphql_fundamentals",
+    "title": "GraphQL API Design",
+    "description": "Schema definition, resolvers, mutations, subscriptions, and tooling.",
+    "skill_ids": [
+      "TECH-9fdcc7f29c59"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 60,
+    "prerequisites": [
+      "mod_js_foundations"
+    ]
+  },
+  {
+    "id": "mod_ml_intro",
+    "title": "Introduction to Machine Learning",
+    "description": "Supervised/unsupervised learning, model evaluation, and scikit-learn.",
+    "skill_ids": [
+      "TECH-4235227b5143"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_py_foundations"
+    ]
+  },
+  {
+    "id": "mod_tensorflow_fundamentals",
+    "title": "TensorFlow Deep Learning",
+    "description": "Tensors, neural networks, Keras API, CNNs, and model training.",
+    "skill_ids": [
+      "TECH-3d3f421e9db6"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_ml_intro"
+    ]
+  },
+  {
+    "id": "mod_tensorflow_advanced",
+    "title": "Advanced TensorFlow & Production ML",
+    "description": "Custom layers, TF Serving, TFX pipelines, and distributed training.",
+    "skill_ids": [
+      "TECH-3d3f421e9db6"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_tensorflow_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_pytorch_fundamentals",
+    "title": "PyTorch Deep Learning",
+    "description": "Autograd, nn.Module, training loops, and GPU acceleration.",
+    "skill_ids": [
+      "TECH-dfecc9eaf34d"
+    ],
+    "domain": "Technology",
+    "level": "Intermediate",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_ml_intro"
+    ]
+  },
+  {
+    "id": "mod_pytorch_advanced",
+    "title": "Advanced PyTorch & Research ML",
+    "description": "Custom datasets, distributed training, ONNX export, and optimization.",
+    "skill_ids": [
+      "TECH-dfecc9eaf34d"
+    ],
+    "domain": "Technology",
+    "level": "Advanced",
+    "duration_min": 120,
+    "prerequisites": [
+      "mod_pytorch_fundamentals"
+    ]
+  },
+  {
+    "id": "mod_kafka_fundamentals",
+    "title": "Apache Kafka Fundamentals",
+    "description": "Topics, producers, consumers, consumer groups, and Kafka Streams.",
+    "skill_ids": [
+      "TECH-5dd9422f45dc"
     ],
     "domain": "Technology",
     "level": "Intermediate",
@@ -156,1295 +481,29 @@
     "prerequisites": []
   },
   {
-    "id": "mod_5bfba67d",
-    "title": "Advanced Freight+ Mastery",
-    "description": "A comprehensive advanced module focusing on Freight+.",
+    "id": "mod_kafka_advanced",
+    "title": "Advanced Kafka & Event-Driven Architecture",
+    "description": "Schema Registry, exactly-once semantics, Connect, and KSQL.",
     "skill_ids": [
-      "TECH-a5dd28680702"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_00c595c9",
-    "title": "Introduction to Scheme",
-    "description": "A comprehensive beginner module focusing on Scheme.",
-    "skill_ids": [
-      "TECH-9a9e56edb7dc"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_94407fd7"
-    ]
-  },
-  {
-    "id": "mod_bd1de991",
-    "title": "Scheme Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Scheme.",
-    "skill_ids": [
-      "TECH-9a9e56edb7dc"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_e1d3d18d",
-    "title": "Barrel mounted sprayers Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Barrel mounted sprayers.",
-    "skill_ids": [
-      "TOOL-5f16da550f00"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_c3ac2099",
-    "title": "Introduction to Barrel mounted sprayers",
-    "description": "A comprehensive beginner module focusing on Barrel mounted sprayers.",
-    "skill_ids": [
-      "TOOL-5f16da550f00"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_e52564ea"
-    ]
-  },
-  {
-    "id": "mod_22d74167",
-    "title": "Grouting trowels Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Grouting trowels.",
-    "skill_ids": [
-      "TOOL-ad5f6b8138c0"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_9eb66f38",
-    "title": "Grouting trowels Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Grouting trowels.",
-    "skill_ids": [
-      "TOOL-ad5f6b8138c0"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_32fe45e3",
-    "title": "Discharge hoses Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Discharge hoses.",
-    "skill_ids": [
-      "TOOL-3262c4ba88b5"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_13da3018",
-    "title": "Introduction to Discharge hoses",
-    "description": "A comprehensive beginner module focusing on Discharge hoses.",
-    "skill_ids": [
-      "TOOL-3262c4ba88b5"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_2aff84a6"
-    ]
-  },
-  {
-    "id": "mod_168ccd57",
-    "title": "Introduction to Optiwave OptiSPICE",
-    "description": "A comprehensive beginner module focusing on Optiwave OptiSPICE.",
-    "skill_ids": [
-      "TECH-bc69b9804826"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_5bfba67d"
-    ]
-  },
-  {
-    "id": "mod_214cd024",
-    "title": "Introduction to Volatile organic compound VOC measurement devices",
-    "description": "A comprehensive beginner module focusing on Volatile organic compound VOC measurement devices.",
-    "skill_ids": [
-      "TOOL-7b8d31921265"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_894253c7"
-    ]
-  },
-  {
-    "id": "mod_909368c8",
-    "title": "Advanced Swinging leads Mastery",
-    "description": "A comprehensive advanced module focusing on Swinging leads.",
-    "skill_ids": [
-      "TOOL-675c1e0e312b"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_33187d3a",
-    "title": "Introduction to Electronic penetrometers",
-    "description": "A comprehensive beginner module focusing on Electronic penetrometers.",
-    "skill_ids": [
-      "TOOL-b5417247bfb1"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_13da3018"
-    ]
-  },
-  {
-    "id": "mod_9c189b3c",
-    "title": "Advanced Forklift booms Mastery",
-    "description": "A comprehensive advanced module focusing on Forklift booms.",
-    "skill_ids": [
-      "TOOL-2c7b2db1dc89"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_4f8f2391",
-    "title": "Advanced Forklift booms Mastery",
-    "description": "A comprehensive advanced module focusing on Forklift booms.",
-    "skill_ids": [
-      "TOOL-2c7b2db1dc89"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_b7136580",
-    "title": "Introduction to Angle tip forceps",
-    "description": "A comprehensive beginner module focusing on Angle tip forceps.",
-    "skill_ids": [
-      "TOOL-c29a4b96ec18"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_214cd024"
-    ]
-  },
-  {
-    "id": "mod_ac627313",
-    "title": "Advanced Alignment jigs Mastery",
-    "description": "A comprehensive advanced module focusing on Alignment jigs.",
-    "skill_ids": [
-      "TOOL-81735b73b2f7"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_33c67051",
-    "title": "Alignment jigs Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Alignment jigs.",
-    "skill_ids": [
-      "TOOL-81735b73b2f7"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_735d5a3e",
-    "title": "Introduction to Thumb drives",
-    "description": "A comprehensive beginner module focusing on Thumb drives.",
-    "skill_ids": [
-      "TOOL-456e91d16288"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_909368c8"
-    ]
-  },
-  {
-    "id": "mod_c9edc4e2",
-    "title": "Introduction to Thumb drives",
-    "description": "A comprehensive beginner module focusing on Thumb drives.",
-    "skill_ids": [
-      "TOOL-456e91d16288"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_9c189b3c"
-    ]
-  },
-  {
-    "id": "mod_18087dd6",
-    "title": "Imaging microscopes Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Imaging microscopes.",
-    "skill_ids": [
-      "TOOL-1bd36f9b0e62"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_21d984e8",
-    "title": "Workstation platforms Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Workstation platforms.",
-    "skill_ids": [
-      "TOOL-dc50eac8da52"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_000450fa",
-    "title": "Survey Sense Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Survey Sense.",
-    "skill_ids": [
-      "TECH-2a0f6399fda5"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_afc1c5b8",
-    "title": "Introduction to Tracks Software",
-    "description": "A comprehensive beginner module focusing on Tracks Software.",
-    "skill_ids": [
-      "TECH-e98ed666b3eb"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_bfc74363"
-    ]
-  },
-  {
-    "id": "mod_7c59e73f",
-    "title": "Advanced Oracle Essbase Mastery",
-    "description": "A comprehensive advanced module focusing on Oracle Essbase.",
-    "skill_ids": [
-      "TECH-d9327c134b5c"
+      "TECH-5dd9422f45dc"
     ],
     "domain": "Technology",
     "level": "Advanced",
     "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_d473c7ad",
-    "title": "Advanced Temperature controlled reach-in growth chambers Mastery",
-    "description": "A comprehensive advanced module focusing on Temperature controlled reach-in growth chambers.",
-    "skill_ids": [
-      "TOOL-71cddc45e12d"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_53ca61e4",
-    "title": "Image enlargers Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Image enlargers.",
-    "skill_ids": [
-      "TOOL-9caf71352370"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_ad17b095",
-    "title": "Portable rock drills Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Portable rock drills.",
-    "skill_ids": [
-      "TOOL-e844bb9a3f97"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_e38b7071",
-    "title": "Introduction to Portable rock drills",
-    "description": "A comprehensive beginner module focusing on Portable rock drills.",
-    "skill_ids": [
-      "TOOL-e844bb9a3f97"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
     "prerequisites": [
-      "mod_000450fa"
+      "mod_kafka_fundamentals"
     ]
   },
   {
-    "id": "mod_e6b19de2",
-    "title": "Advanced Computer-aided drafting or design software Mastery",
-    "description": "A comprehensive advanced module focusing on Computer-aided drafting or design software.",
+    "id": "mod_rabbitmq_fundamentals",
+    "title": "RabbitMQ Message Queuing",
+    "description": "Exchanges, queues, bindings, reliability patterns, and clustering.",
     "skill_ids": [
-      "TECH-2367fba18f94"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_6efd9108",
-    "title": "Digital vacuum gauges Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Digital vacuum gauges.",
-    "skill_ids": [
-      "TOOL-0331b7f47fe9"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_4edc372e",
-    "title": "Servopneumatic actuators Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Servopneumatic actuators.",
-    "skill_ids": [
-      "TOOL-d20b70a65128"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_611c9040",
-    "title": "Plug spades Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Plug spades.",
-    "skill_ids": [
-      "TOOL-5e40b63e8c49"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_5b82fc5d",
-    "title": "Introduction to Hand chisels",
-    "description": "A comprehensive beginner module focusing on Hand chisels.",
-    "skill_ids": [
-      "TOOL-60feaff8992c"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_13da3018"
-    ]
-  },
-  {
-    "id": "mod_537ee5ca",
-    "title": "Advanced Hand chisels Mastery",
-    "description": "A comprehensive advanced module focusing on Hand chisels.",
-    "skill_ids": [
-      "TOOL-60feaff8992c"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_d9c998ce",
-    "title": "Combination drills Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Combination drills.",
-    "skill_ids": [
-      "TOOL-67f843aa9e18"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_bcad0063",
-    "title": "Introduction to Combination drills",
-    "description": "A comprehensive beginner module focusing on Combination drills.",
-    "skill_ids": [
-      "TOOL-67f843aa9e18"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_5b82fc5d"
-    ]
-  },
-  {
-    "id": "mod_ec3c8583",
-    "title": "Advanced Sliding panel saws Mastery",
-    "description": "A comprehensive advanced module focusing on Sliding panel saws.",
-    "skill_ids": [
-      "TOOL-86dfa735a782"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_1f79b96a",
-    "title": "Advanced Socket drivers Mastery",
-    "description": "A comprehensive advanced module focusing on Socket drivers.",
-    "skill_ids": [
-      "TOOL-ba105b0f73c6"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_67fb9429",
-    "title": "Hot plates with magnetic stirrers Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Hot plates with magnetic stirrers.",
-    "skill_ids": [
-      "TOOL-4961c3082a80"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_edf29201",
-    "title": "Advanced Hot plates with magnetic stirrers Mastery",
-    "description": "A comprehensive advanced module focusing on Hot plates with magnetic stirrers.",
-    "skill_ids": [
-      "TOOL-4961c3082a80"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_735331b0",
-    "title": "Argon beam coagulators Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Argon beam coagulators.",
-    "skill_ids": [
-      "TOOL-ce2c2ed42e2c"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_90a02979",
-    "title": "Introduction to Argon beam coagulators",
-    "description": "A comprehensive beginner module focusing on Argon beam coagulators.",
-    "skill_ids": [
-      "TOOL-ce2c2ed42e2c"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_214cd024"
-    ]
-  },
-  {
-    "id": "mod_14744794",
-    "title": "Advanced Cattlesoft CattleMax Mastery",
-    "description": "A comprehensive advanced module focusing on Cattlesoft CattleMax.",
-    "skill_ids": [
-      "TECH-bd7d17a0a73d"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_a53a688e",
-    "title": "Cattlesoft CattleMax Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Cattlesoft CattleMax.",
-    "skill_ids": [
-      "TECH-bd7d17a0a73d"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_c08dbec0",
-    "title": "Advanced Sterilizer chambers Mastery",
-    "description": "A comprehensive advanced module focusing on Sterilizer chambers.",
-    "skill_ids": [
-      "TOOL-63c8d3d9756c"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_359860b3",
-    "title": "Brooders Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Brooders.",
-    "skill_ids": [
-      "TOOL-766731af8e77"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_76fe42f6",
-    "title": "Advanced Brooders Mastery",
-    "description": "A comprehensive advanced module focusing on Brooders.",
-    "skill_ids": [
-      "TOOL-766731af8e77"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_329509a6",
-    "title": "Advanced Abutment drivers Mastery",
-    "description": "A comprehensive advanced module focusing on Abutment drivers.",
-    "skill_ids": [
-      "TOOL-02d156d7aadb"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_37204afb",
-    "title": "Introduction to Abutment drivers",
-    "description": "A comprehensive beginner module focusing on Abutment drivers.",
-    "skill_ids": [
-      "TOOL-02d156d7aadb"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_735331b0"
-    ]
-  },
-  {
-    "id": "mod_2e003ebf",
-    "title": "KELTEC Systems HerdMaster Fundamentals",
-    "description": "A comprehensive intermediate module focusing on KELTEC Systems HerdMaster.",
-    "skill_ids": [
-      "TECH-aa2aba97beaa"
+      "TECH-d37a9628bc10"
     ],
     "domain": "Technology",
     "level": "Intermediate",
     "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_6cfce90c",
-    "title": "Introduction to Nut wrenches",
-    "description": "A comprehensive beginner module focusing on Nut wrenches.",
-    "skill_ids": [
-      "TOOL-3c858f9fe1ef"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_611c9040"
-    ]
-  },
-  {
-    "id": "mod_5971b62e",
-    "title": "Advanced Radiation shielding lead aprons Mastery",
-    "description": "A comprehensive advanced module focusing on Radiation shielding lead aprons.",
-    "skill_ids": [
-      "TOOL-c62d9fe42f4e"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f3ade84c",
-    "title": "Introduction to Doppler pulse measurement devices",
-    "description": "A comprehensive beginner module focusing on Doppler pulse measurement devices.",
-    "skill_ids": [
-      "TOOL-fca501287963"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_21d984e8"
-    ]
-  },
-  {
-    "id": "mod_54173506",
-    "title": "OfficeWork Software TurboProject Fundamentals",
-    "description": "A comprehensive intermediate module focusing on OfficeWork Software TurboProject.",
-    "skill_ids": [
-      "TECH-4171b836401a"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_b3021a0d",
-    "title": "Advanced Optical particle detectors Mastery",
-    "description": "A comprehensive advanced module focusing on Optical particle detectors.",
-    "skill_ids": [
-      "TOOL-23ee46cfab2f"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_4afb90a5",
-    "title": "Optical particle detectors Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Optical particle detectors.",
-    "skill_ids": [
-      "TOOL-23ee46cfab2f"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f6cab33c",
-    "title": "Folding hex wrench sets Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Folding hex wrench sets.",
-    "skill_ids": [
-      "TOOL-30104aff1621"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_85d7d20b",
-    "title": "Introduction to Global positioning system GPS software",
-    "description": "A comprehensive beginner module focusing on Global positioning system GPS software.",
-    "skill_ids": [
-      "TECH-74ac369df888"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_c3ac2099"
-    ]
-  },
-  {
-    "id": "mod_c363d5b6",
-    "title": "Advanced Career management systems CMS Mastery",
-    "description": "A comprehensive advanced module focusing on Career management systems CMS.",
-    "skill_ids": [
-      "TECH-a30449ba85c2"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f0ef04c3",
-    "title": "Career management systems CMS Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Career management systems CMS.",
-    "skill_ids": [
-      "TECH-a30449ba85c2"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_2e068302",
-    "title": "Introduction to Radiation uptake detectors",
-    "description": "A comprehensive beginner module focusing on Radiation uptake detectors.",
-    "skill_ids": [
-      "TOOL-bac3b70be561"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_5b82fc5d"
-    ]
-  },
-  {
-    "id": "mod_8a051c55",
-    "title": "Advanced Geostatistics software GS+ Mastery",
-    "description": "A comprehensive advanced module focusing on Geostatistics software GS+.",
-    "skill_ids": [
-      "TECH-73f39a658c56"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_708eeb26",
-    "title": "Advanced Geostatistics software GS+ Mastery",
-    "description": "A comprehensive advanced module focusing on Geostatistics software GS+.",
-    "skill_ids": [
-      "TECH-73f39a658c56"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_274c410f",
-    "title": "Introduction to Metal chisels",
-    "description": "A comprehensive beginner module focusing on Metal chisels.",
-    "skill_ids": [
-      "TOOL-9d9dc184f127"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_de2d25ee"
-    ]
-  },
-  {
-    "id": "mod_0ec44f10",
-    "title": "Metal chisels Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Metal chisels.",
-    "skill_ids": [
-      "TOOL-9d9dc184f127"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f994f611",
-    "title": "Dental curing light sources Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Dental curing light sources.",
-    "skill_ids": [
-      "TOOL-00b32724fe14"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_7e4ffe41",
-    "title": "Advanced AMS Services AMS Sagitta Mastery",
-    "description": "A comprehensive advanced module focusing on AMS Services AMS Sagitta.",
-    "skill_ids": [
-      "TECH-ca74b8d4c3ea"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_d5d0fea6",
-    "title": "Advanced MSC Software Fatigue Mastery",
-    "description": "A comprehensive advanced module focusing on MSC Software Fatigue.",
-    "skill_ids": [
-      "TECH-34a0e086a5b8"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_b05bfb4d",
-    "title": "Introduction to MSC Software Fatigue",
-    "description": "A comprehensive beginner module focusing on MSC Software Fatigue.",
-    "skill_ids": [
-      "TECH-34a0e086a5b8"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_1166e0e6"
-    ]
-  },
-  {
-    "id": "mod_8af7fd04",
-    "title": "Advanced JRP Consulting Plant Wizard Mastery",
-    "description": "A comprehensive advanced module focusing on JRP Consulting Plant Wizard.",
-    "skill_ids": [
-      "TECH-df0f0c3d83e4"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f4db8681",
-    "title": "Product coating machines Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Product coating machines.",
-    "skill_ids": [
-      "TOOL-62347acefc8a"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_fb4b2f39",
-    "title": "Acrendo A.I.med Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Acrendo A.I.med.",
-    "skill_ids": [
-      "TECH-7d23f7ac0752"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_c600c49e",
-    "title": "Cell culture bioreactors Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Cell culture bioreactors.",
-    "skill_ids": [
-      "TOOL-83b9a64b1a40"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_08f8748d",
-    "title": "Introduction to Condensation nuclei counters CNC",
-    "description": "A comprehensive beginner module focusing on Condensation nuclei counters CNC.",
-    "skill_ids": [
-      "TOOL-3c518faf28fd"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_21d984e8"
-    ]
-  },
-  {
-    "id": "mod_9e4d2c44",
-    "title": "Introduction to Condensation nuclei counters CNC",
-    "description": "A comprehensive beginner module focusing on Condensation nuclei counters CNC.",
-    "skill_ids": [
-      "TOOL-3c518faf28fd"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_9eb66f38"
-    ]
-  },
-  {
-    "id": "mod_959c76a3",
-    "title": "Introduction to High-volume air sampling pumps",
-    "description": "A comprehensive beginner module focusing on High-volume air sampling pumps.",
-    "skill_ids": [
-      "TOOL-003cfca28b27"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_5b82fc5d"
-    ]
-  },
-  {
-    "id": "mod_2d29e156",
-    "title": "Introduction to High-volume air sampling pumps",
-    "description": "A comprehensive beginner module focusing on High-volume air sampling pumps.",
-    "skill_ids": [
-      "TOOL-003cfca28b27"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_33c67051"
-    ]
-  },
-  {
-    "id": "mod_02286700",
-    "title": "Advanced Ground proximity warning systems GPWS Mastery",
-    "description": "A comprehensive advanced module focusing on Ground proximity warning systems GPWS.",
-    "skill_ids": [
-      "TOOL-9d8813dcab5c"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_4fd74464",
-    "title": "Ground proximity warning systems GPWS Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Ground proximity warning systems GPWS.",
-    "skill_ids": [
-      "TOOL-9d8813dcab5c"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_c47cd280",
-    "title": "Portable ventilators Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Portable ventilators.",
-    "skill_ids": [
-      "TOOL-ae9db9ffd33f"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f11a4ffe",
-    "title": "Advanced Portable ventilators Mastery",
-    "description": "A comprehensive advanced module focusing on Portable ventilators.",
-    "skill_ids": [
-      "TOOL-ae9db9ffd33f"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_699f51bc",
-    "title": "Advanced Force film washers Mastery",
-    "description": "A comprehensive advanced module focusing on Force film washers.",
-    "skill_ids": [
-      "TOOL-5469f29cecd2"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_c2443fe9",
-    "title": "Advanced Force film washers Mastery",
-    "description": "A comprehensive advanced module focusing on Force film washers.",
-    "skill_ids": [
-      "TOOL-5469f29cecd2"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_e611dc97",
-    "title": "Sales management software Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Sales management software.",
-    "skill_ids": [
-      "TECH-1763706602a4"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 90,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_12d51ba5",
-    "title": "Introduction to DORIS FILESERVERonline",
-    "description": "A comprehensive beginner module focusing on DORIS FILESERVERonline.",
-    "skill_ids": [
-      "TECH-7b725dc96e4a"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_f4db8681"
-    ]
-  },
-  {
-    "id": "mod_fd1ca681",
-    "title": "Advanced Pattern boards Mastery",
-    "description": "A comprehensive advanced module focusing on Pattern boards.",
-    "skill_ids": [
-      "TOOL-a92eec93990d"
-    ],
-    "domain": "Tools",
-    "level": "Advanced",
-    "duration_min": 240,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_dc6f4016",
-    "title": "Introduction to Simple DirectMedia Layer SDL",
-    "description": "A comprehensive beginner module focusing on Simple DirectMedia Layer SDL.",
-    "skill_ids": [
-      "TECH-58859abd8800"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_d5d0fea6"
-    ]
-  },
-  {
-    "id": "mod_dba3e9ed",
-    "title": "Advanced Simple DirectMedia Layer SDL Mastery",
-    "description": "A comprehensive advanced module focusing on Simple DirectMedia Layer SDL.",
-    "skill_ids": [
-      "TECH-58859abd8800"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 180,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_fb7b9fb3",
-    "title": "Introduction to Static proof dust cleaners",
-    "description": "A comprehensive beginner module focusing on Static proof dust cleaners.",
-    "skill_ids": [
-      "TOOL-49766f4cc493"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_33c67051"
-    ]
-  },
-  {
-    "id": "mod_2f1bcad5",
-    "title": "Introduction to Tubing cutters",
-    "description": "A comprehensive beginner module focusing on Tubing cutters.",
-    "skill_ids": [
-      "TOOL-93c87a278e29"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_735331b0"
-    ]
-  },
-  {
-    "id": "mod_707b3b54",
-    "title": "Introduction to Michelson interferometers",
-    "description": "A comprehensive beginner module focusing on Michelson interferometers.",
-    "skill_ids": [
-      "TOOL-171925801bcb"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_611c9040"
-    ]
-  },
-  {
-    "id": "mod_b41c991d",
-    "title": "Michelson interferometers Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Michelson interferometers.",
-    "skill_ids": [
-      "TOOL-171925801bcb"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_92953193",
-    "title": "Cisco Systems Wireless Control System WCS Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Cisco Systems Wireless Control System WCS.",
-    "skill_ids": [
-      "TECH-cbb3baa5048c"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 120,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f667c4c9",
-    "title": "Cisco Systems Wireless Control System WCS Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Cisco Systems Wireless Control System WCS.",
-    "skill_ids": [
-      "TECH-cbb3baa5048c"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_f9ea4783",
-    "title": "Introduction to Long range navigation systems LRNS",
-    "description": "A comprehensive beginner module focusing on Long range navigation systems LRNS.",
-    "skill_ids": [
-      "TOOL-775c784e3dee"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 60,
-    "prerequisites": [
-      "mod_5bfba67d"
-    ]
-  },
-  {
-    "id": "mod_fa7f9c38",
-    "title": "Introduction to The Mortgage Office Loan Origination",
-    "description": "A comprehensive beginner module focusing on The Mortgage Office Loan Origination.",
-    "skill_ids": [
-      "TECH-51fdceb35c37"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_d473c7ad"
-    ]
-  },
-  {
-    "id": "mod_d01ad3c7",
-    "title": "Introduction to Curing equipment",
-    "description": "A comprehensive beginner module focusing on Curing equipment.",
-    "skill_ids": [
-      "TOOL-ba5934e9ab3e"
-    ],
-    "domain": "Tools",
-    "level": "Beginner",
-    "duration_min": 30,
-    "prerequisites": [
-      "mod_d473c7ad"
-    ]
-  },
-  {
-    "id": "mod_1c204a64",
-    "title": "Tear-off bars Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Tear-off bars.",
-    "skill_ids": [
-      "TOOL-7111e1052621"
-    ],
-    "domain": "Tools",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_b268bb22",
-    "title": "Fire Spread Probability FSPro Fundamentals",
-    "description": "A comprehensive intermediate module focusing on Fire Spread Probability FSPro.",
-    "skill_ids": [
-      "TECH-f237a429692c"
-    ],
-    "domain": "Technology",
-    "level": "Intermediate",
-    "duration_min": 60,
-    "prerequisites": []
-  },
-  {
-    "id": "mod_1fdba322",
-    "title": "Introduction to Fire Spread Probability FSPro",
-    "description": "A comprehensive beginner module focusing on Fire Spread Probability FSPro.",
-    "skill_ids": [
-      "TECH-f237a429692c"
-    ],
-    "domain": "Technology",
-    "level": "Beginner",
-    "duration_min": 45,
-    "prerequisites": [
-      "mod_fa7f9c38"
-    ]
-  },
-  {
-    "id": "mod_0b7489ea",
-    "title": "Advanced IBM Rational ClearQuest Mastery",
-    "description": "A comprehensive advanced module focusing on IBM Rational ClearQuest.",
-    "skill_ids": [
-      "TECH-83d4a67c8d1d"
-    ],
-    "domain": "Technology",
-    "level": "Advanced",
-    "duration_min": 240,
     "prerequisites": []
   }
 ]

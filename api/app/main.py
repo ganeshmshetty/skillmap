@@ -128,7 +128,10 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
 
         resume_skills = anchor_to_onet(extract_resume_skills(resume_text))
         jd_skills = anchor_to_onet(extract_jd_skills(jd_text))
+        print(f"DEBUG: Extracted {len(resume_skills)} resume skills, {len(jd_skills)} JD skills")
+        
         gap_vector = compute_gap_vector(resume_skills, jd_skills)
+        print(f"DEBUG: Computed {len(gap_vector)} gaps")
 
         if CATALOG is None:
             raise RuntimeError(CATALOG_ERROR or "Course catalog is unavailable")
@@ -317,13 +320,13 @@ def metrics() -> JSONResponse:
         )
 
     coverage_scores = [
-        j["result"]["summary"].get("coverage_score", 0) for j in completed if "result" in j
+        j["result"].get("coverage_score", 0) for j in completed if "result" in j
     ]
     redundancy_vals = [
-        j["result"]["summary"].get("redundancy_reduction", 0) for j in completed if "result" in j
+        j["result"].get("redundancy_reduction", 0) for j in completed if "result" in j
     ]
     minutes_vals = [
-        j["result"]["summary"].get("estimated_total_minutes", 0) for j in completed if "result" in j
+        j["result"]["pathway"].get("total_duration", 0) for j in completed if "result" in j
     ]
 
     return JSONResponse(

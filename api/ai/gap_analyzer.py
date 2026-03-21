@@ -20,22 +20,30 @@ def compute_gap_vector(
     gaps = []
     for jd_skill in jd_skills:
         if not jd_skill.is_required:
-            continue  # skip nice-to-haves for core pathway
-
+            continue
+            
         lookup_key = jd_skill.onet_id or jd_skill.name.lower()
         current = resume_map.get(lookup_key)
+        
+        # proficiency_level from LLM is 1, 2, 3
         current_level = current.proficiency_level if current else 0
-
-        delta = max(0, jd_skill.required_level - current_level)
+        
+        # DEMO LOGIC: If user matches required level, suggest pushing to NEXT level
+        # if JD wants 2 and user is 2, set required to 3 so we suggest advanced modules
+        effective_required = jd_skill.required_level
+        if current_level >= effective_required and current_level < 3:
+            effective_required = current_level + 1
+            
+        delta = max(0, effective_required - current_level)
         if delta == 0:
-            continue  # already satisfied
+            continue
 
         gap_score = delta * jd_skill.importance
         gaps.append(GapItem(
             skill_name=jd_skill.name,
             onet_id=jd_skill.onet_id,
             current_level=current_level,
-            required_level=jd_skill.required_level,
+            required_level=effective_required,
             gap_score=gap_score,
             importance=jd_skill.importance
         ))
@@ -176,11 +184,44 @@ def generate_adaptive_pathway(
         # Dedupe
         skills_covered = list(set(skills_covered))
         
+        # --- Generate Reasoning ---
+        # For the hackathon, we'll use a mix of template and LLM
+        # to avoid hitting rate limits too hard if the path is long.
+        
+        gap_desc = ", ".join(skills_covered) if skills_covered else "Prerequisite Knowledge"
+        
+        # Real reasoning using LLM (if we have a client)
+        # For Member A: This is the chain-of-thought generator
+        justification = None
+        try:
+            from ai.extractor import _call_llm
+            from ai.prompts import REASONING_TRACE_PROMPT
+            
+            # Only call LLM for the first few core modules to save time/quota
+            if i < 5:
+                prompt = REASONING_TRACE_PROMPT.format(
+                    module_title=module.title,
+                    gap_description=gap_desc,
+                    current_level=0, # Simplified
+                    required_level=module.level,
+                    prereq_chain=", ".join(sorted_order[:i])
+                )
+                # Use a smaller/faster model if available
+                justification = _call_llm(prompt)
+        except Exception:
+            pass
+
+        if not justification:
+            if skills_covered:
+                justification = f"This module addresses your gap in {skills_covered[0]}. It provides the necessary depth for {module.level} proficiency."
+            else:
+                justification = f"A fundamental prerequisite that builds the necessary foundation for advanced technologies in your pathway."
+
         reasoning = ReasoningTrace(
             module_id=module.id,
             module_title=module.title,
-            gap_closed=", ".join(skills_covered) if skills_covered else "Prerequisite Knowledge",
-            justification=f"This module addresses your gap in {skills_covered[0]}" if skills_covered else f"Necessary prerequisite for advanced modules.",
+            gap_closed=gap_desc,
+            justification=justification,
             confidence=0.95
         )
         

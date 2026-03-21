@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function useCountUp(target, duration = 1200) {
-    const [value, setValue] = window.React.useState(0);
+    const [value, setValue] = useState(0);
     useEffect(() => {
         let start = 0;
-        const step = target / (duration / 16);
+        const targetNum = Number(target) || 0;
+        const step = targetNum / (duration / 16);
         const timer = setInterval(() => {
             start += step;
-            if (start >= target) { setValue(target); clearInterval(timer); }
+            if (start >= targetNum) { setValue(targetNum); clearInterval(timer); }
             else setValue(Math.round(start * 100) / 100);
         }, 16);
         return () => clearInterval(timer);

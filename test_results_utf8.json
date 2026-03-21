@@ -1,0 +1,617 @@
+﻿Job ID: 82867e9d-30d1-4c80-889b-076860957ff7
+Status: processing
+Status: processing
+Status: completed
+
+================================================================================
+{
+  "job_id": "82867e9d-30d1-4c80-889b-076860957ff7",
+  "status": "completed",
+  "updated_at": "2026-03-21T04:12:18.064162+00:00",
+  "result": {
+    "resume_skills": [
+      {
+        "name": "Python",
+        "onet_id": "TECH-4235227b5143",
+        "proficiency_level": 2,
+        "years_exp": 5.0,
+        "confidence": 0.95
+      },
+      {
+        "name": "JavaScript",
+        "onet_id": "TECH-b6e13ad53d8e",
+        "proficiency_level": 2,
+        "years_exp": 5.0,
+        "confidence": 0.95
+      },
+      {
+        "name": "React",
+        "onet_id": "TECH-6b810c90aa9a",
+        "proficiency_level": 2,
+        "years_exp": 5.0,
+        "confidence": 0.95
+      },
+      {
+        "name": "Docker",
+        "onet_id": "TECH-e982f17bcbe0",
+        "proficiency_level": 2,
+        "years_exp": null,
+        "confidence": 0.8
+      },
+      {
+        "name": "Kubernetes",
+        "onet_id": "TECH-adc1f5c8707f",
+        "proficiency_level": 2,
+        "years_exp": null,
+        "confidence": 0.8
+      },
+      {
+        "name": "PostgreSQL",
+        "onet_id": "TECH-519968cbed98",
+        "proficiency_level": 2,
+        "years_exp": null,
+        "confidence": 0.8
+      },
+      {
+        "name": "Redis",
+        "onet_id": "TECH-b840fc02d524",
+        "proficiency_level": 2,
+        "years_exp": null,
+        "confidence": 0.8
+      },
+      {
+        "name": "Git",
+        "onet_id": "TECH-46f1a0bd5592",
+        "proficiency_level": 1,
+        "years_exp": null,
+        "confidence": 0.7
+      },
+      {
+        "name": "Linux",
+        "onet_id": "TECH-ba324ca7b1c7",
+        "proficiency_level": 1,
+        "years_exp": null,
+        "confidence": 0.7
+      },
+      {
+        "name": "CI/CD",
+        "onet_id": "TECH-e982f17bcbe0",
+        "proficiency_level": 1,
+        "years_exp": null,
+        "confidence": 0.7
+      }
+    ],
+    "jd_skills": [
+      {
+        "name": "Python",
+        "onet_id": "TECH-4235227b5143",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.8
+      },
+      {
+        "name": "JavaScript",
+        "onet_id": "TECH-b6e13ad53d8e",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.8
+      },
+      {
+        "name": "React.js",
+        "onet_id": null,
+        "required_level": 3,
+        "is_required": true,
+        "importance": 1.0
+      },
+      {
+        "name": "Node.js",
+        "onet_id": "TECH-90de35a5800e",
+        "required_level": 3,
+        "is_required": true,
+        "importance": 1.0
+      },
+      {
+        "name": "Docker",
+        "onet_id": "TECH-e982f17bcbe0",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.9
+      },
+      {
+        "name": "Kubernetes",
+        "onet_id": "TECH-adc1f5c8707f",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.9
+      },
+      {
+        "name": "PostgreSQL",
+        "onet_id": "TECH-519968cbed98",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.7
+      },
+      {
+        "name": "MongoDB",
+        "onet_id": "TECH-7f1c982e835a",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.7
+      },
+      {
+        "name": "NoSQL",
+        "onet_id": "TECH-e6c5f6d71fd5",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.7
+      },
+      {
+        "name": "Apache Kafka",
+        "onet_id": "TECH-5dd9422f45dc",
+        "required_level": 1,
+        "is_required": true,
+        "importance": 0.6
+      },
+      {
+        "name": "TensorFlow",
+        "onet_id": "TECH-3d3f421e9db6",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.5
+      },
+      {
+        "name": "PyTorch",
+        "onet_id": "TECH-dfecc9eaf34d",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.5
+      },
+      {
+        "name": "Git",
+        "onet_id": "TECH-46f1a0bd5592",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.8
+      },
+      {
+        "name": "Linux",
+        "onet_id": "TECH-ba324ca7b1c7",
+        "required_level": 2,
+        "is_required": true,
+        "importance": 0.8
+      },
+      {
+        "name": "AWS",
+        "onet_id": "TECH-ba324ca7b1c7",
+        "required_level": 1,
+        "is_required": true,
+        "importance": 0.6
+      },
+      {
+        "name": "GCP",
+        "onet_id": "TECH-ba324ca7b1c7",
+        "required_level": 1,
+        "is_required": true,
+        "importance": 0.6
+      }
+    ],
+    "gap_vector": [
+      {
+        "skill_name": "React.js",
+        "onet_id": null,
+        "current_level": 0,
+        "required_level": 3,
+        "gap_score": 3.0,
+        "importance": 1.0
+      },
+      {
+        "skill_name": "Node.js",
+        "onet_id": "TECH-90de35a5800e",
+        "current_level": 0,
+        "required_level": 3,
+        "gap_score": 3.0,
+        "importance": 1.0
+      },
+      {
+        "skill_name": "MongoDB",
+        "onet_id": "TECH-7f1c982e835a",
+        "current_level": 0,
+        "required_level": 2,
+        "gap_score": 1.4,
+        "importance": 0.7
+      },
+      {
+        "skill_name": "NoSQL",
+        "onet_id": "TECH-e6c5f6d71fd5",
+        "current_level": 0,
+        "required_level": 2,
+        "gap_score": 1.4,
+        "importance": 0.7
+      },
+      {
+        "skill_name": "TensorFlow",
+        "onet_id": "TECH-3d3f421e9db6",
+        "current_level": 0,
+        "required_level": 2,
+        "gap_score": 1.0,
+        "importance": 0.5
+      },
+      {
+        "skill_name": "PyTorch",
+        "onet_id": "TECH-dfecc9eaf34d",
+        "current_level": 0,
+        "required_level": 2,
+        "gap_score": 1.0,
+        "importance": 0.5
+      },
+      {
+        "skill_name": "Docker",
+        "onet_id": "TECH-e982f17bcbe0",
+        "current_level": 1,
+        "required_level": 2,
+        "gap_score": 0.9,
+        "importance": 0.9
+      },
+      {
+        "skill_name": "Git",
+        "onet_id": "TECH-46f1a0bd5592",
+        "current_level": 1,
+        "required_level": 2,
+        "gap_score": 0.8,
+        "importance": 0.8
+      },
+      {
+        "skill_name": "Linux",
+        "onet_id": "TECH-ba324ca7b1c7",
+        "current_level": 1,
+        "required_level": 2,
+        "gap_score": 0.8,
+        "importance": 0.8
+      },
+      {
+        "skill_name": "Apache Kafka",
+        "onet_id": "TECH-5dd9422f45dc",
+        "current_level": 0,
+        "required_level": 1,
+        "gap_score": 0.6,
+        "importance": 0.6
+      }
+    ],
+    "pathway": {
+      "nodes": [
+        {
+          "module_id": "mod_js_foundations",
+          "title": "JavaScript Foundations",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_js_foundations",
+            "module_title": "JavaScript Foundations",
+            "gap_closed": "Prerequisite Knowledge",
+            "justification": "Necessary prerequisite for advanced modules.",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": []
+        },
+        {
+          "module_id": "mod_mongodb_fundamentals",
+          "title": "MongoDB & NoSQL Fundamentals",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_mongodb_fundamentals",
+            "module_title": "MongoDB & NoSQL Fundamentals",
+            "gap_closed": "NoSQL, MongoDB",
+            "justification": "This module addresses your gap in NoSQL",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": [
+            "NoSQL",
+            "MongoDB"
+          ]
+        },
+        {
+          "module_id": "mod_py_foundations",
+          "title": "Python Foundations",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_py_foundations",
+            "module_title": "Python Foundations",
+            "gap_closed": "Prerequisite Knowledge",
+            "justification": "Necessary prerequisite for advanced modules.",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": []
+        },
+        {
+          "module_id": "mod_linux_essentials",
+          "title": "Linux System Administration Essentials",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_linux_essentials",
+            "module_title": "Linux System Administration Essentials",
+            "gap_closed": "Linux",
+            "justification": "This module addresses your gap in Linux",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": [
+            "Linux"
+          ]
+        },
+        {
+          "module_id": "mod_git_version_control",
+          "title": "Git & Version Control",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_git_version_control",
+            "module_title": "Git & Version Control",
+            "gap_closed": "Git",
+            "justification": "This module addresses your gap in Git",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 30,
+          "skill_gaps_covered": [
+            "Git"
+          ]
+        },
+        {
+          "module_id": "mod_kafka_fundamentals",
+          "title": "Apache Kafka Fundamentals",
+          "phase": "Core",
+          "reasoning": {
+            "module_id": "mod_kafka_fundamentals",
+            "module_title": "Apache Kafka Fundamentals",
+            "gap_closed": "Apache Kafka",
+            "justification": "This module addresses your gap in Apache Kafka",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 90,
+          "skill_gaps_covered": [
+            "Apache Kafka"
+          ]
+        },
+        {
+          "module_id": "mod_node_fundamentals",
+          "title": "Node.js Fundamentals",
+          "phase": "Foundation",
+          "reasoning": {
+            "module_id": "mod_node_fundamentals",
+            "module_title": "Node.js Fundamentals",
+            "gap_closed": "Node.js",
+            "justification": "This module addresses your gap in Node.js",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": [
+            "Node.js"
+          ]
+        },
+        {
+          "module_id": "mod_ml_intro",
+          "title": "Introduction to Machine Learning",
+          "phase": "Core",
+          "reasoning": {
+            "module_id": "mod_ml_intro",
+            "module_title": "Introduction to Machine Learning",
+            "gap_closed": "Prerequisite Knowledge",
+            "justification": "Necessary prerequisite for advanced modules.",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 120,
+          "skill_gaps_covered": []
+        },
+        {
+          "module_id": "mod_docker_fundamentals",
+          "title": "Docker Containerization",
+          "phase": "Core",
+          "reasoning": {
+            "module_id": "mod_docker_fundamentals",
+            "module_title": "Docker Containerization",
+            "gap_closed": "Docker",
+            "justification": "This module addresses your gap in Docker",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 60,
+          "skill_gaps_covered": [
+            "Docker"
+          ]
+        },
+        {
+          "module_id": "mod_node_advanced",
+          "title": "Advanced Node.js",
+          "phase": "Advanced",
+          "reasoning": {
+            "module_id": "mod_node_advanced",
+            "module_title": "Advanced Node.js",
+            "gap_closed": "Node.js",
+            "justification": "This module addresses your gap in Node.js",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 90,
+          "skill_gaps_covered": [
+            "Node.js"
+          ]
+        },
+        {
+          "module_id": "mod_tensorflow_fundamentals",
+          "title": "TensorFlow Deep Learning",
+          "phase": "Core",
+          "reasoning": {
+            "module_id": "mod_tensorflow_fundamentals",
+            "module_title": "TensorFlow Deep Learning",
+            "gap_closed": "TensorFlow",
+            "justification": "This module addresses your gap in TensorFlow",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 120,
+          "skill_gaps_covered": [
+            "TensorFlow"
+          ]
+        },
+        {
+          "module_id": "mod_pytorch_fundamentals",
+          "title": "PyTorch Deep Learning",
+          "phase": "Core",
+          "reasoning": {
+            "module_id": "mod_pytorch_fundamentals",
+            "module_title": "PyTorch Deep Learning",
+            "gap_closed": "PyTorch",
+            "justification": "This module addresses your gap in PyTorch",
+            "confidence": 0.95,
+            "prerequisite_chain": []
+          },
+          "status": "pending",
+          "estimated_duration": 120,
+          "skill_gaps_covered": [
+            "PyTorch"
+          ]
+        }
+      ],
+      "total_duration": 930,
+      "phases": {
+        "Foundation": [
+          "mod_js_foundations",
+          "mod_mongodb_fundamentals",
+          "mod_py_foundations",
+          "mod_linux_essentials",
+          "mod_git_version_control",
+          "mod_node_fundamentals"
+        ],
+        "Core": [
+          "mod_kafka_fundamentals",
+          "mod_ml_intro",
+          "mod_docker_fundamentals",
+          "mod_tensorflow_fundamentals",
+          "mod_pytorch_fundamentals"
+        ],
+        "Advanced": [
+          "mod_node_advanced"
+        ]
+      }
+    },
+    "reasoning_traces": [
+      {
+        "module_id": "mod_js_foundations",
+        "module_title": "JavaScript Foundations",
+        "gap_closed": "Prerequisite Knowledge",
+        "justification": "Necessary prerequisite for advanced modules.",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_mongodb_fundamentals",
+        "module_title": "MongoDB & NoSQL Fundamentals",
+        "gap_closed": "NoSQL, MongoDB",
+        "justification": "This module addresses your gap in NoSQL",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_py_foundations",
+        "module_title": "Python Foundations",
+        "gap_closed": "Prerequisite Knowledge",
+        "justification": "Necessary prerequisite for advanced modules.",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_linux_essentials",
+        "module_title": "Linux System Administration Essentials",
+        "gap_closed": "Linux",
+        "justification": "This module addresses your gap in Linux",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_git_version_control",
+        "module_title": "Git & Version Control",
+        "gap_closed": "Git",
+        "justification": "This module addresses your gap in Git",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_kafka_fundamentals",
+        "module_title": "Apache Kafka Fundamentals",
+        "gap_closed": "Apache Kafka",
+        "justification": "This module addresses your gap in Apache Kafka",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_node_fundamentals",
+        "module_title": "Node.js Fundamentals",
+        "gap_closed": "Node.js",
+        "justification": "This module addresses your gap in Node.js",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_ml_intro",
+        "module_title": "Introduction to Machine Learning",
+        "gap_closed": "Prerequisite Knowledge",
+        "justification": "Necessary prerequisite for advanced modules.",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_docker_fundamentals",
+        "module_title": "Docker Containerization",
+        "gap_closed": "Docker",
+        "justification": "This module addresses your gap in Docker",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_node_advanced",
+        "module_title": "Advanced Node.js",
+        "gap_closed": "Node.js",
+        "justification": "This module addresses your gap in Node.js",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_tensorflow_fundamentals",
+        "module_title": "TensorFlow Deep Learning",
+        "gap_closed": "TensorFlow",
+        "justification": "This module addresses your gap in TensorFlow",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      },
+      {
+        "module_id": "mod_pytorch_fundamentals",
+        "module_title": "PyTorch Deep Learning",
+        "gap_closed": "PyTorch",
+        "justification": "This module addresses your gap in PyTorch",
+        "confidence": 0.95,
+        "prerequisite_chain": []
+      }
+    ],
+    "coverage_score": 0.31,
+    "redundancy_reduction": 0.61
+  }
+}

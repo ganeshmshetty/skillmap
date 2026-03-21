@@ -1,11 +1,5 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import "./styles.css";
-
-// Expose React globally so sub-components can call window.React.useState
-// (they import hooks this way to keep imports clean in simpler files)
-import React from "react";
-window.React = React;
-
 import UploadPanel from "./UploadPanel";
 import ProgressBar from "./ProgressBar";
 import SummaryCards from "./SummaryCards";

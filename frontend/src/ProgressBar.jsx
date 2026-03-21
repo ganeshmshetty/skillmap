@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const STEPS = [
     { icon: "📤", label: "Uploading" },
@@ -16,8 +16,8 @@ function statusToStep(status) {
 }
 
 export default function ProgressBar({ jobId, apiBase, onComplete, onError }) {
-    const [currentStep, setCurrentStep] = window.React.useState(0);
-    const [apiStatus, setApiStatus] = window.React.useState("queued");
+    const [currentStep, setCurrentStep] = useState(0);
+    const [apiStatus, setApiStatus] = useState("queued");
     const intervalRef = useRef(null);
 
     useEffect(() => {

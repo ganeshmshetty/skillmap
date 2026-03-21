@@ -76,7 +76,7 @@ export default function SkillGapHeatmap({ gapVector }) {
                         marginLeft: "auto",
                     }}
                 >
-                    Higher bar = larger gap
+                    Top {data.length} gaps identified
                 </span>
             </div>
 
@@ -104,40 +104,42 @@ export default function SkillGapHeatmap({ gapVector }) {
                 ))}
             </div>
 
-            <ResponsiveContainer width="100%" height={280}>
-                <BarChart
-                    data={data}
-                    layout="vertical"
-                    margin={{ top: 0, right: 16, left: 0, bottom: 0 }}
-                >
-                    <CartesianGrid
-                        horizontal={false}
-                        stroke="rgba(255,255,255,0.05)"
-                    />
-                    <XAxis
-                        type="number"
-                        domain={[0, 1]}
-                        tickFormatter={(v) => `${Math.round(v * 100)}%`}
-                        tick={{ fill: "var(--text-muted)", fontSize: 11 }}
-                        axisLine={{ stroke: "var(--border)" }}
-                        tickLine={false}
-                    />
-                    <YAxis
-                        type="category"
-                        dataKey="name"
-                        width={140}
-                        tick={{ fill: "var(--text-secondary)", fontSize: 11 }}
-                        axisLine={false}
-                        tickLine={false}
-                    />
-                    <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
-                    <Bar dataKey="gap" radius={[0, 4, 4, 0]} maxBarSize={18}>
-                        {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={gapColor(entry.gap)} />
-                        ))}
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
+            <div style={{ height: 320, minWidth: 300 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={data}
+                        layout="vertical"
+                        margin={{ top: 0, right: 16, left: 0, bottom: 0 }}
+                    >
+                        <CartesianGrid
+                            horizontal={false}
+                            stroke="rgba(255,255,255,0.05)"
+                        />
+                        <XAxis
+                            type="number"
+                            domain={[0, 1]}
+                            tickFormatter={(v) => `${Math.round(v * 100)}%`}
+                            tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+                            axisLine={{ stroke: "var(--border)" }}
+                            tickLine={false}
+                        />
+                        <YAxis
+                            type="category"
+                            dataKey="name"
+                            width={140}
+                            tick={{ fill: "var(--text-secondary)", fontSize: 11 }}
+                            axisLine={false}
+                            tickLine={false}
+                        />
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
+                        <Bar dataKey="gap" radius={[0, 4, 4, 0]} maxBarSize={18}>
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={gapColor(entry.gap)} />
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 }

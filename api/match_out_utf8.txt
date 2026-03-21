@@ -1,0 +1,42 @@
+﻿=== Catalog skill_ids and their O*NET titles ===
+  TECH-06f400d6894c -> Profitool software (human resources feature)
+  TECH-1763706602a4 -> Sales management software
+  TECH-2367fba18f94 -> Computer-aided drafting or design software
+  TECH-2a0f6399fda5 -> Survey Sense
+  TECH-34a0e086a5b8 -> MSC Software Fatigue
+  TECH-4171b836401a -> OfficeWork Software TurboProject
+  TECH-51fdceb35c37 -> The Mortgage Office Loan Origination
+  TECH-58859abd8800 -> Simple DirectMedia Layer SDL
+  TECH-73f39a658c56 -> Geostatistics software GS+
+  TECH-74ac369df888 -> Global positioning system GPS software
+  TECH-77b7324a590a -> FileMaker Bento
+  TECH-7b0c4e6d47e3 -> Landport Systems Landport
+  TECH-7b725dc96e4a -> DORIS FILESERVERonline
+  TECH-7d23f7ac0752 -> Acrendo A.I.med
+  TECH-83d4a67c8d1d -> IBM Rational ClearQuest
+  TECH-9a9e56edb7dc -> Scheme
+  TECH-a30449ba85c2 -> Career management systems CMS
+  TECH-a5dd28680702 -> Freight+
+  TECH-aa2aba97beaa -> KELTEC Systems HerdMaster
+  TECH-bc69b9804826 -> Optiwave OptiSPICE
+  TECH-bd7d17a0a73d -> Cattlesoft CattleMax
+  TECH-ca74b8d4c3ea -> AMS Services AMS Sagitta
+  TECH-cbb3baa5048c -> Cisco Systems Wireless Control System WCS
+  TECH-d9327c134b5c -> Oracle Essbase
+  TECH-df0f0c3d83e4 -> JRP Consulting Plant Wizard
+  TECH-e98ed666b3eb -> Tracks Software
+  TECH-f237a429692c -> Fire Spread Probability FSPro
+  TECH-fbd517cf977e -> Amadeus CRS
+  TOOL-003cfca28b27 -> High-volume air sampling pumps
+  TOOL-00b32724fe14 -> Dental curing light sources
+
+=== Testing anchor_to_onet matching ===
+  'Python' -> onet_id=TECH-4235227b5143, in_catalog=False
+  'Docker' -> onet_id=TECH-e982f17bcbe0, in_catalog=False
+  'Kubernetes' -> onet_id=TECH-adc1f5c8707f, in_catalog=False
+  'NoSQL' -> onet_id=TECH-e6c5f6d71fd5, in_catalog=False
+  'PostgreSQL' -> onet_id=TECH-519968cbed98, in_catalog=False
+  'Go' -> onet_id=TECH-1ec558a60b5d, in_catalog=False
+  'Java' -> onet_id=None, in_catalog=False
+  'REST APIs' -> onet_id=None, in_catalog=False
+  'Machine Learning' -> onet_id=None, in_catalog=False
