@@ -29,7 +29,7 @@ def _call_llm(prompt: str, max_retries: int = 3) -> str:
                 raise
     # Final attempt without catching
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-flash-latest",
         contents=prompt,
     )
     return response.text

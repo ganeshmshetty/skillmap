@@ -1,8 +1,25 @@
 import json
 import os
+import math
+from typing import Any
+
+from dotenv import load_dotenv
+
 from .models import ExtractedSkill, JDSkill
 
 _onet_cache = None
+_onet_index_cache = None
+_embedding_client = None
+_embedding_cache: dict[str, list[float]] = {}
+_embedding_enabled: bool | None = None
+
+load_dotenv()
+
+EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "gemini-embedding-2-preview")
+EMBEDDING_THRESHOLD = float(os.getenv("GEMINI_EMBEDDING_THRESHOLD", "0.82"))
+EMBEDDING_BATCH_SIZE = int(os.getenv("GEMINI_EMBEDDING_BATCH_SIZE", "32"))
+EMBEDDING_MAX_CANDIDATES = int(os.getenv("GEMINI_EMBEDDING_MAX_CANDIDATES", "128"))
+EMBEDDING_OUTPUT_DIMENSIONALITY = int(os.getenv("GEMINI_EMBEDDING_OUTPUT_DIMENSIONALITY", "768"))
 
 # Common tech skill names → O*NET IDs that don't have exact title matches
 # These handle cases where LLM extracts "Java" but O*NET titles it differently
@@ -74,6 +91,109 @@ COMMON_SKILL_ALIASES = {
     "mongodb": "TECH-7f1c982e835a",
 }
 
+
+def _normalize_text(text: str) -> str:
+    return " ".join(text.lower().strip().split())
+
+
+def _tokenize(text: str) -> list[str]:
+    normalized = _normalize_text(text)
+    tokens = []
+    for raw in normalized.replace("/", " ").replace("-", " ").replace(".", " ").split():
+        if len(raw) >= 2:
+            tokens.append(raw)
+    return tokens
+
+
+def _normalize_vector(values: list[float]) -> list[float]:
+    norm = math.sqrt(sum(v * v for v in values))
+    if norm == 0:
+        return values
+    return [v / norm for v in values]
+
+
+def _dot_similarity(a: list[float], b: list[float]) -> float:
+    if len(a) != len(b):
+        return -1.0
+    return sum(x * y for x, y in zip(a, b))
+
+
+def _get_embedding_client():
+    global _embedding_client
+    if _embedding_client is not None:
+        return _embedding_client
+
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        return None
+
+    try:
+        from google import genai
+        _embedding_client = genai.Client(api_key=api_key)
+    except Exception:
+        return None
+    return _embedding_client
+
+
+def _is_embedding_enabled() -> bool:
+    global _embedding_enabled
+    if _embedding_enabled is not None:
+        return _embedding_enabled
+
+    flag = os.getenv("ENABLE_GEMINI_EMBEDDING_MATCH", "true").strip().lower()
+    if flag in {"0", "false", "no", "off"}:
+        _embedding_enabled = False
+        return False
+
+    _embedding_enabled = _get_embedding_client() is not None
+    return _embedding_enabled
+
+
+def _extract_values(embedding_obj: Any) -> list[float] | None:
+    values = getattr(embedding_obj, "values", None)
+    if values is None and isinstance(embedding_obj, dict):
+        values = embedding_obj.get("values")
+    if not values:
+        return None
+    return [float(v) for v in values]
+
+
+def _embed_texts(texts: list[str], task_type: str) -> dict[str, list[float]]:
+    client = _get_embedding_client()
+    if client is None:
+        return {}
+
+    uncached = [t for t in texts if t not in _embedding_cache]
+    if uncached:
+        try:
+            from google.genai import types
+            for i in range(0, len(uncached), EMBEDDING_BATCH_SIZE):
+                batch = uncached[i : i + EMBEDDING_BATCH_SIZE]
+                config = types.EmbedContentConfig(
+                    task_type=task_type,
+                    output_dimensionality=EMBEDDING_OUTPUT_DIMENSIONALITY,
+                )
+                response = client.models.embed_content(
+                    model=EMBEDDING_MODEL,
+                    contents=batch,
+                    config=config,
+                )
+                embeddings = getattr(response, "embeddings", None)
+                if embeddings is None and isinstance(response, dict):
+                    embeddings = response.get("embeddings")
+                if not embeddings:
+                    continue
+
+                for text, emb in zip(batch, embeddings):
+                    values = _extract_values(emb)
+                    if values is not None:
+                        _embedding_cache[text] = _normalize_vector(values)
+        except Exception as exc:
+            print(f"[Embedder] Gemini embedding call failed: {exc}")
+            return {}
+
+    return {t: _embedding_cache[t] for t in texts if t in _embedding_cache}
+
 def _get_onet_data(path="data/onet_skills.json"):
     global _onet_cache
     if _onet_cache is not None:
@@ -96,6 +216,51 @@ def _get_onet_data(path="data/onet_skills.json"):
     _onet_cache = data
     return _onet_cache
 
+
+def _get_onet_index() -> dict[str, Any]:
+    global _onet_index_cache
+    if _onet_index_cache is not None:
+        return _onet_index_cache
+
+    onet_nodes = _get_onet_data()
+    title_map: dict[str, str] = {}
+    alias_map: dict[str, str] = {}
+    id_to_title: dict[str, str] = {}
+    token_to_ids: dict[str, set[str]] = {}
+
+    for n in onet_nodes:
+        sid = n["id"]
+        title = _normalize_text(n["title"])
+        title_map[title] = sid
+        id_to_title[sid] = n["title"]
+
+        for token in _tokenize(title):
+            token_to_ids.setdefault(token, set()).add(sid)
+
+        for alias in n.get("aliases", []):
+            alias_norm = _normalize_text(alias)
+            alias_map[alias_norm] = sid
+            for token in _tokenize(alias_norm):
+                token_to_ids.setdefault(token, set()).add(sid)
+
+    _onet_index_cache = {
+        "title_map": title_map,
+        "alias_map": alias_map,
+        "id_to_title": id_to_title,
+        "token_to_ids": token_to_ids,
+    }
+    return _onet_index_cache
+
+
+def _candidate_ids_for_name(name: str, token_to_ids: dict[str, set[str]], limit: int) -> list[str]:
+    score: dict[str, int] = {}
+    for tok in _tokenize(name):
+        for sid in token_to_ids.get(tok, set()):
+            score[sid] = score.get(sid, 0) + 1
+
+    ranked = sorted(score.items(), key=lambda kv: kv[1], reverse=True)
+    return [sid for sid, _ in ranked[:limit]]
+
 def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
     """
     Match a list of ExtractedSkill or JDSkill to canonical O*NET nodes.
@@ -106,18 +271,19 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
     if not onet_nodes:
         return skills  # graceful degradation if data not ready
 
-    # Pre-compute title map and alias map for O(1) lookup
-    title_map = {}
-    alias_map = {}
-    for n in onet_nodes:
-        title_map[n["title"].lower().strip()] = n["id"]
-        for alias in n.get("aliases", []):
-            alias_map[alias.lower().strip()] = n["id"]
+    index = _get_onet_index()
+    title_map = index["title_map"]
+    alias_map = index["alias_map"]
+    id_to_title = index["id_to_title"]
+    token_to_ids = index["token_to_ids"]
+
+    unresolved = []
     
     for skill in skills:
-        if skill.onet_id: continue
+        if skill.onet_id:
+            continue
         
-        name = skill.name.lower().strip()
+        name = _normalize_text(skill.name)
         
         # Stage 1: Exact title match
         if name in title_map:
@@ -133,9 +299,55 @@ def anchor_to_onet(skills: list, threshold: float = 0.82) -> list:
         if name in COMMON_SKILL_ALIASES:
             skill.onet_id = COMMON_SKILL_ALIASES[name]
             continue
-            
-        # Stage 4: Substring Fallback (contains)
-        # Check if skill name is a substring of O*NET titles (or vice-versa)
+
+        unresolved.append(skill)
+
+    # Stage 4: Gemini embedding semantic retrieval fallback.
+    if unresolved and _is_embedding_enabled():
+        semantic_threshold = threshold if threshold != 0.82 else EMBEDDING_THRESHOLD
+        query_texts = [_normalize_text(s.name) for s in unresolved]
+        query_vectors = _embed_texts(query_texts, task_type="RETRIEVAL_QUERY")
+
+        for skill, query_text in zip(unresolved, query_texts):
+            query_vec = query_vectors.get(query_text)
+            if query_vec is None:
+                continue
+
+            candidate_ids = _candidate_ids_for_name(
+                query_text,
+                token_to_ids,
+                EMBEDDING_MAX_CANDIDATES,
+            )
+            if not candidate_ids:
+                continue
+
+            candidate_texts = [id_to_title[sid] for sid in candidate_ids if sid in id_to_title]
+            candidate_vectors = _embed_texts(candidate_texts, task_type="RETRIEVAL_DOCUMENT")
+            if not candidate_vectors:
+                continue
+
+            best_sid = None
+            best_score = -1.0
+            for sid in candidate_ids:
+                ctext = id_to_title.get(sid)
+                if not ctext:
+                    continue
+                cvec = candidate_vectors.get(ctext)
+                if cvec is None:
+                    continue
+                score = _dot_similarity(query_vec, cvec)
+                if score > best_score:
+                    best_score = score
+                    best_sid = sid
+
+            if best_sid and best_score >= semantic_threshold:
+                skill.onet_id = best_sid
+
+    # Stage 5: conservative substring fallback for remaining unresolved skills.
+    for skill in skills:
+        if skill.onet_id:
+            continue
+        name = _normalize_text(skill.name)
         for title, sid in title_map.items():
             if len(name) > 3 and (name in title or title in name):
                 skill.onet_id = sid
