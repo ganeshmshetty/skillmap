@@ -6,9 +6,18 @@ from threading import Lock
 from uuid import uuid4
 import logging
 
-from fastapi import BackgroundTasks, FastAPI, File, UploadFile
+from dotenv import load_dotenv
+
+# Let's ensure the explicit path is found for safety
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
+load_dotenv(dotenv_path=env_path)
+load_dotenv() # Fallback
+
+from fastapi import BackgroundTasks, FastAPI, File, UploadFile, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
+from app.database.connection import get_supabase_client
 
 # Heavy AI modules are imported lazily inside `_run_analysis` so the API
 # can start for lightweight checks (e.g. /health) even if ML deps
@@ -302,6 +311,39 @@ def _run_analysis(job_id: str, resume_bytes: bytes, resume_filename: str, jd_byt
             if node.reasoning:
                 traces.append(node.reasoning)
 
+        # Supabase Direct Database Logging
+        supabase = get_supabase_client()
+        if supabase:
+            try:
+                # 1. Insert header analysis record
+                analysis_res = supabase.table("analyses").insert({
+                    "job_title": f"Analysis - {detected_domain}",
+                    "match_score": round(coverage, 4) * 100
+                }).execute()
+                
+                # Check execution data returned
+                if analysis_res.data and len(analysis_res.data) > 0:
+                    inserted_analysis_id = analysis_res.data[0]["id"]
+                    
+                    # 2. Insert all generated modules bulk tied to the analysis ID
+                    modules_to_insert = []
+                    for index, node in enumerate(pathway.nodes):
+                        reason_text = node.justification if hasattr(node, 'justification') else getattr(node.reasoning, 'justification', "Required for skill gap")
+                        modules_to_insert.append({
+                            "analysis_id": inserted_analysis_id,
+                            "module_id": node.module_id,
+                            "title": node.title,
+                            "status": "Pending",
+                            "order_index": index,
+                            "justification": reason_text
+                        })
+                    
+                    if modules_to_insert:
+                        supabase.table("pathway_modules").insert(modules_to_insert).execute()
+                    logger.info(f"[{job_id}] Supabase Logged Pathway (Analysis ID: {inserted_analysis_id})")
+            except Exception as e:
+                logger.error(f"[{job_id}] Failed writing to Supabase: {e}")
+
         result = AnalysisResult(
             resume_skills=resume_skills,
             jd_skills=jd_skills,
@@ -462,4 +504,62 @@ def metrics() -> JSONResponse:
             "avg_estimated_minutes": round(sum(minutes_vals) / len(minutes_vals)) if minutes_vals else None,
         },
     )
+
+# =========================================================================
+# DASHBOARD HISTORY ENDPOINTS (Supabase)
+# =========================================================================
+
+@app.get("/api/history")
+async def get_history(limit: int = 10):
+    supabase = get_supabase_client()
+    if not supabase:
+        return JSONResponse(status_code=500, content={"error": "Supabase client unconfigured"})
+    
+    try:
+        response = supabase.table("analyses").select("*").order("created_at", desc=True).limit(limit).execute()
+        return {"data": response.data}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+@app.get("/api/history/{analysis_id}")
+async def get_history_detail(analysis_id: int):
+    supabase = get_supabase_client()
+    if not supabase:
+        return JSONResponse(status_code=500, content={"error": "Supabase client unconfigured"})
+        
+    try:
+        # Fetch the root analysis details
+        analysis_res = supabase.table("analyses").select("*").eq("id", analysis_id).execute()
+        if not analysis_res.data:
+            raise HTTPException(status_code=404, detail="Analysis not found")
+        
+        # Fetch all modules linked to this analysis, ordered correctly
+        modules_res = supabase.table("pathway_modules").select("*").eq("analysis_id", analysis_id).order("order_index").execute()
+        
+        result = analysis_res.data[0]
+        result["modules"] = modules_res.data
+        return {"data": result}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
+from pydantic import BaseModel
+class StatusUpdate(BaseModel):
+    status: str
+
+@app.put("/api/pathway_modules/{module_id}")
+async def update_pathway_module(module_id: int, payload: StatusUpdate):
+    supabase = get_supabase_client()
+    if not supabase:
+        return JSONResponse(status_code=500, content={"error": "Supabase client unconfigured"})
+        
+    try:
+        # Update the specific module status
+        update_res = supabase.table("pathway_modules").update({"status": payload.status}).eq("id", module_id).execute()
+        
+        if not update_res.data:
+            raise HTTPException(status_code=404, detail="Module not found or update failed")
+            
+        return {"message": "Status updated successfully", "data": update_res.data[0]}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 

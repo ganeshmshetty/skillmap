@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import "./styles.css";
 import UploadPanel from "./UploadPanel";
 import ProgressBar from "./ProgressBar";
@@ -6,7 +7,9 @@ import SummaryCards from "./SummaryCards";
 import SkillGapHeatmap from "./SkillGapHeatmap";
 import PathwayFlowGraph from "./PathwayFlowGraph";
 import ReasoningPanel from "./ReasoningPanel";
-import { BrainCircuit } from "lucide-react";
+import Dashboard from "./Dashboard";
+import PathwayTracker from "./PathwayTracker";
+import { BrainCircuit, LibraryBig } from "lucide-react";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -32,8 +35,8 @@ function StepIndicator({ current }) {
             <div
               className={`step-dot${active ? " active" : ""}${done ? " done" : ""}`}
             >
-              <div className="step-circle">{done ? "\u2713" : i + 1}</div>
-              <span style={{ whiteSpace: "nowrap" }}>{s.label}</span>
+              <div className="step-circle">{done ? "✓" : i + 1}</div>
+              <span style={{ whiteSpace: "nowrap" }}>{String(s.label)}</span>
             </div>
             {i < STEP_META.length - 1 && (
               <div className={`step-line${done ? " done" : ""}`} />
@@ -115,66 +118,91 @@ export default function App() {
 
       <div className="page">
         {/* ---- Header ---- */}
-        <header className="header">
-          <div className="header-logo"><BrainCircuit size={20} strokeWidth={2.5} color="var(--on-surface)" /></div>
-          <div className="header-title">AI-Adaptive Onboarding Engine</div>
-          <div className="header-badge">Hackathon 2026</div>
+        <header className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="header-logo"><BrainCircuit size={20} strokeWidth={2.5} color="var(--on-surface)" /></div>
+            <div className="header-title">AI-Adaptive Onboarding Engine</div>
+            <div className="header-badge">Hackathon 2026</div>
+          </div>
+          <nav>
+            <Link to="/dashboard" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.5rem', 
+              color: 'var(--on-surface)',
+              textDecoration: 'none',
+              background: 'var(--surface-container)',
+              padding: '0.5rem 1rem',
+              borderRadius: '8px',
+              fontSize: '0.85rem',
+              fontWeight: '600'
+            }}>
+              <LibraryBig size={16} /> Pathway Library
+            </Link>
+          </nav>
         </header>
 
-        {/* ---- Main ---- */}
+        {/* ---- Main Routing ---- */}
         <main className="main-content">
-          <StepIndicator current={step} />
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pathway/:id" element={<PathwayTracker />} />
+            <Route path="/" element={
+              <>
+                <StepIndicator current={step} />
 
-          {/* UPLOAD */}
-          {step === STEPS.UPLOAD && (
-            <div className="glass-card" style={{ animation: "slideUp 0.4s ease" }}>
-              <UploadPanel onSubmit={handleSubmit} error={error} />
-            </div>
-          )}
+                {/* UPLOAD */}
+                {step === STEPS.UPLOAD && (
+                  <div className="glass-card" style={{ animation: "slideUp 0.4s ease" }}>
+                    <UploadPanel onSubmit={handleSubmit} error={error} />
+                  </div>
+                )}
 
-          {/* PROCESSING */}
-          {step === STEPS.PROCESSING && (
-            <ProgressBar
-              jobId={jobId}
-              apiBase={API_BASE_URL}
-              onComplete={handleComplete}
-              onError={handlePollError}
-            />
-          )}
+                {/* PROCESSING */}
+                {step === STEPS.PROCESSING && (
+                  <ProgressBar
+                    jobId={jobId}
+                    apiBase={API_BASE_URL}
+                    onComplete={handleComplete}
+                    onError={handlePollError}
+                  />
+                )}
 
-          {/* RESULTS */}
-          {step === STEPS.RESULTS && result && (
-            <div style={{ animation: "slideUp 0.4s ease" }}>
-              <div className="results-header">
-                <div>
-                  <h1 className="section-title">Your Learning Pathway</h1>
-                  <p className="section-subtitle">
-                    {result.pathway?.nodes?.length || 0} personalized modules ·
-                    grounded, hallucination-free recommendations
-                  </p>
-                </div>
-                <button
-                  id="reset-btn"
-                  className="btn-reset"
-                  onClick={handleReset}
-                >
-                  New Analysis
-                </button>
-              </div>
+                {/* RESULTS */}
+                {step === STEPS.RESULTS && result && (
+                  <div style={{ animation: "slideUp 0.4s ease" }}>
+                    <div className="results-header">
+                      <div>
+                        <h1 className="section-title">Your Learning Pathway</h1>
+                        <p className="section-subtitle">
+                          {result.pathway?.nodes?.length || 0} personalized modules � grounded, hallucination-free recommendations
+                        </p>
+                      </div>
+                      <button
+                        id="reset-btn"
+                        className="btn-reset"
+                        onClick={handleReset}
+                      >
+                        New Analysis
+                      </button>
+                    </div>
 
-              {/* Metric Cards */}
-              <SummaryCards result={result} />
+                    {/* Metric Cards */}
+                    <SummaryCards result={result} />
 
-              {/* Skill Gap Chart */}
-              <SkillGapHeatmap gapVector={result.gap_vector || buildGapFromPathway(result)} />
+                    {/* Skill Gap Chart */}
+                    <SkillGapHeatmap gapVector={result.gap_vector || buildGapFromPathway(result)} />
 
-              {/* React Flow DAG */}
-              <PathwayFlowGraph
-                pathway={result.pathway}
-                onSelectModule={handleSelectModule}
-              />
-            </div>
-          )}
+                    {/* React Flow DAG */}
+                    <PathwayFlowGraph
+                      pathway={result.pathway}
+                      onSelectModule={handleSelectModule}
+                    />
+                  </div>
+                )}
+              </>
+            } />
+          </Routes>
         </main>
       </div>
 
@@ -208,3 +236,8 @@ function buildGapFromPathway(result) {
     };
   });
 }
+
+
+
+
+

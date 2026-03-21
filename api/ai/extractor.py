@@ -8,7 +8,13 @@ from dotenv import load_dotenv
 from .prompts import RESUME_EXTRACTION_PROMPT, JD_EXTRACTION_PROMPT
 from .models import ExtractedSkill, JDSkill
 
+# Re-evaluate the path to the api/.env file explicitly
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
+load_dotenv(dotenv_path=env_path)
+
+# Then explicitly re-load standard dotenv as fallback in case it's run differently
 load_dotenv()
+
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 

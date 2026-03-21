@@ -166,3 +166,15 @@ Fetch async analysis result.
   }
 }
 ```
+
+
+
+## GET \/api/history/{id}\`nFetch a specific historical run with its expanded module list from the DB.
+
+## PUT \/api/pathway_modules/{id}\`nUpdate a status module payload (e.g. \{"status": "In Progress"}\).
+Fetch historical analytics runs saved to the Supabase database.
+Fetch historical analytics runs saved to the Supabase database.
+Fetch a specific historical run with its expanded module list from the DB.
+Fetch a specific historical run with its expanded module list from the DB.
+Update a status module payload (e.g. \{"status": "In Progress"}\).
+Update a status module payload (e.g. \{"status": "In Progress"}\).

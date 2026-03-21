@@ -23,28 +23,51 @@ graph LR
 
 ---
 
-## 3-Command Setup
+## 3-Step Setup
 
+### Step 1. Environment & Database Configuration
+Create a local `.env` file from the example and configure your keys:
 ```bash
-cp .env.example .env                      # 1. Create env file
-docker compose up --build                 # 2. Build & start all services
-open http://localhost:5173                # 3. Open the UI
+cp .env.example .env
 ```
+Next, create your required Supabase Database. We use **Supabase** (PostgreSQL) to store generated pathways. 
+1. Create a project on [Supabase](https://supabase.com/).
+2. Run the SQL schema provided in `api/app/database/supabase_schema.sql` in your Supabase SQL Editor.
+3. Add your `SUPABASE_URL` and `SUPABASE_KEY` to your new `.env` file along with your `GEMINI_API_KEY`.
+
+### Step 2. Build via Docker
+```bash
+docker compose up --build                 # Build & start all services       
+```
+
+### Step 3. Launch UI
+```bash
+open http://localhost:5173                # Open the UI
+```
+
+---
 
 ## Local Development (No Docker)
 
-**Backend**
+**Backend Setup**
 ```bash
-cd api
-python -m venv .venv && source .venv/bin/activate
+# 1. Create virtual environment and activate
+python -m venv .venv && source .venv/bin/activate  # Mac/Linux
+# or `.\\.venv\\Scripts\\activate` on Windows
+
+# 2. Install Python dependencies 
 pip install -r requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+# 3. Ensure your .env file is properly setup in the root (Gemini Key + Supabase Keys)
+
+# 4. Start the backend
+uvicorn api.app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Frontend**
+**Frontend Setup**
 ```bash
 cd frontend
-npm install
+npm install   # Installs React, Vite, react-router-dom, etc.
 npm run dev
 ```
 
