@@ -41,13 +41,16 @@ export default function SummaryCards({ result }) {
     const minutes = useCountUp(result?.pathway?.total_duration ?? 0, 1200);
     const hours = Math.round((minutes / 60) * 10) / 10;
 
+    // Format to max 2 decimal places, strip trailing zeros
+    const fmt = (v) => parseFloat(v.toFixed(2));
+
     return (
         <div className="summary-grid">
             <MetricCard
                 icon={<Target size={32} strokeWidth={2.5} />}
                 label="Coverage Score"
                 value={coverage}
-                formatted={`${coverage}%`}
+                formatted={`${fmt(coverage)}%`}
                 color="var(--accent-teal)"
                 delay={0}
                 tooltip="Percentage of job requirements covered by your current skills. 100% means you meet all core requirements."
@@ -56,7 +59,7 @@ export default function SummaryCards({ result }) {
                 icon={<Scissors size={32} strokeWidth={2.5} />}
                 label="Redundancy Reduction"
                 value={redundancy}
-                formatted={`${redundancy}%`}
+                formatted={`${fmt(redundancy)}%`}
                 color="var(--accent-blue)"
                 delay={100}
                 tooltip="Time saved by skipping modules for skills you already know. 0% means you are taking the full static curriculum."
