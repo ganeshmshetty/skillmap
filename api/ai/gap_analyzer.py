@@ -1,8 +1,8 @@
 import collections
 from typing import Dict, List, Optional, Set
 
-from api.ai.models import ExtractedSkill, JDSkill, GapItem, AdaptivePathway, PathNode, ReasoningTrace
-from api.app.services.catalog import CatalogModule, CourseCatalogService
+from ai.models import ExtractedSkill, JDSkill, GapItem, AdaptivePathway, PathNode, ReasoningTrace
+from app.services.catalog import CatalogModule, CourseCatalogService
 
 def compute_gap_vector(
     resume_skills: list[ExtractedSkill],

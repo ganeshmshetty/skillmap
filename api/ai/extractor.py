@@ -1,20 +1,37 @@
 import json
 import re
 import os
-import spacy
-import google.generativeai as genai
+import time
+
+from google import genai
 from dotenv import load_dotenv
 from .prompts import RESUME_EXTRACTION_PROMPT, JD_EXTRACTION_PROMPT
 from .models import ExtractedSkill, JDSkill
 
 load_dotenv()
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-gemini = genai.GenerativeModel("gemini-1.5-flash")
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-nlp = spacy.load("en_core_web_sm")
 
-def _call_llm(prompt: str) -> str:
-    response = gemini.generate_content(prompt)
+def _call_llm(prompt: str, max_retries: int = 3) -> str:
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt,
+            )
+            return response.text
+        except Exception as e:
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                wait = 2 ** (attempt + 1)  # 2s, 4s, 8s
+                print(f"Rate limited, retrying in {wait}s (attempt {attempt + 1}/{max_retries})...")
+                time.sleep(wait)
+            else:
+                raise
+    # Final attempt without catching
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+    )
     return response.text
 
 def _parse_json_safely(raw: str) -> list:
@@ -28,7 +45,7 @@ def _parse_json_safely(raw: str) -> list:
         return []
 
 def extract_resume_skills(resume_text: str) -> list[ExtractedSkill]:
-    doc = nlp(resume_text[:10000])
+
     prompt = RESUME_EXTRACTION_PROMPT.format(resume_text=resume_text[:4000])
     raw = _call_llm(prompt)
     items = _parse_json_safely(raw)

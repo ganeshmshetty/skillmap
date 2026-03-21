@@ -37,6 +37,7 @@ class CourseCatalogService:
         candidate_paths = [
             configured,
             "data/catalog/modules.json",
+            "../data/catalog/modules.json",
             "/workspace/data/catalog/modules.json",
         ]
 
